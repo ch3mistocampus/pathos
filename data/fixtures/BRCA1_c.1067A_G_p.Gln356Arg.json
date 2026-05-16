@@ -1,0 +1,56 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.1067A>G",
+  "hgvs_c": "NM_007294.4:c.1067A>G",
+  "hgvs_p": "p.Gln356Arg",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43104090,
+  "ref": "T",
+  "alt": "C",
+  "gnomad": {
+    "af": 0.00041,
+    "af_popmax": 0.00118,
+    "popmax_population": "afr",
+    "hom": 0,
+    "ac": 587,
+    "an": 1438000,
+    "note": "Present at low frequency, enriched in African and admixed American populations"
+  },
+  "insilico": {
+    "revel": 0.412,
+    "cadd_phred": 21.4,
+    "alphamissense": 0.518,
+    "metarnn": 0.44,
+    "spliceai_max": 0.01,
+    "note": "approximate; predictors are split and do not reach decisive thresholds"
+  },
+  "mavedb_function": {
+    "score": -0.35,
+    "category": "intermediate",
+    "source": "Starita_2015",
+    "note": "BRCA1 transcriptional activation assay shows mildly reduced function; not within clear loss-of-function tier"
+  },
+  "literature": [
+    {
+      "pmid": "12955716",
+      "title": "Functional analysis of BRCA1 missense variants in transcriptional activation.",
+      "abstract": "p.Gln356Arg displays intermediate transcriptional activation activity relative to WT BRCA1 in cell-based reporter assays; clinical interpretation requires additional evidence.",
+      "relevant_criteria_hint": ["PS3_supporting", "BS3_supporting"]
+    },
+    {
+      "pmid": "26283626",
+      "title": "Multiplex functional readouts for BRCA1 missense variants.",
+      "abstract": "Multiplex assays of BRCA1 variants assign p.Gln356Arg an ambiguous score that does not distinguish WT-like from null behavior.",
+      "relevant_criteria_hint": ["PS3_supporting"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_conflicting_interpretations",
+    "clinvar_id": "55226",
+    "submitter_count": 13,
+    "note": "ClinVar shows conflicting interpretations from labs (VUS vs LB); strategies should split on whether intermediate functional + low AF support BS3/BS1 or no decisive call"
+  }
+}

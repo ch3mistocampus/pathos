@@ -1,0 +1,56 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.4956G>A",
+  "hgvs_c": "NM_007294.4:c.4956G>A",
+  "hgvs_p": "p.Met1652Ile",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43067648,
+  "ref": "C",
+  "alt": "T",
+  "gnomad": {
+    "af": 0.0000019,
+    "af_popmax": 0.0000063,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 3,
+    "an": 1539000,
+    "note": "approximate; extremely rare with isolated European observations"
+  },
+  "insilico": {
+    "revel": 0.864,
+    "cadd_phred": 27.8,
+    "alphamissense": 0.928,
+    "metarnn": 0.83,
+    "spliceai_max": 0.04,
+    "note": "approximate; predictors strongly favor damaging"
+  },
+  "mavedb_function": {
+    "score": 0.04,
+    "category": "functional_normal",
+    "source": "Findlay_2018",
+    "note": "BRCA1 BRCT-domain saturation genome editing; wild-type-like function despite damaging in-silico signal"
+  },
+  "literature": [
+    {
+      "pmid": "30209399",
+      "title": "Accurate classification of BRCA1 variants with saturation genome editing.",
+      "abstract": "p.Met1652Ile scores within the wild-type distribution of the BRCA1 saturation genome editing assay, indicating retained function in HAP1 cells.",
+      "relevant_criteria_hint": ["BS3"]
+    },
+    {
+      "pmid": "26230696",
+      "title": "BRCA1 BRCT-domain missense variants and functional assays for classification.",
+      "abstract": "Several BRCT-domain variants with strong in-silico damaging predictions retain near-wild-type activity in HDR and transcriptional reporter assays, including p.Met1652Ile.",
+      "relevant_criteria_hint": ["BS3", "BP4"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Likely_benign",
+    "review_status": "criteria_provided_conflicting_interpretations",
+    "clinvar_id": "55410",
+    "submitter_count": 8,
+    "note": "Conflicting submissions split between VUS and LB; functional WT-like signal carries the consensus toward LB"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.9976A>T",
+  "hgvs_c": "NM_000059.4:c.9976A>T",
+  "hgvs_p": "p.Lys3326Ter",
+  "gene": "BRCA2",
+  "consequence": "stop_gained",
+  "chrom": "13",
+  "pos": 32398489,
+  "ref": "A",
+  "alt": "T",
+  "gnomad": {
+    "af": 0.0089,
+    "af_popmax": 0.0148,
+    "popmax_population": "nfe",
+    "hom": 142,
+    "ac": 12894,
+    "an": 1448000,
+    "note": "Founder-allele-like frequency in European cohorts; not consistent with a high-penetrance BRCA2 pathogenic variant"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 37.0,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.01,
+    "note": "REVEL/AlphaMissense not defined for stop-gain; CADD high due to nonsense status"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "22692731",
+      "title": "Truncating BRCA2 c.9976A>T (K3326X) is not associated with high breast/ovarian cancer risk.",
+      "abstract": "Large case-control studies of BRCA2 K3326X find at most a small relative risk for breast and ovarian cancer, well below classical BRCA2 pathogenic alleles; the truncation falls in the last exon and escapes nonsense-mediated decay.",
+      "relevant_criteria_hint": ["BA1", "BS1", "BS2"]
+    },
+    {
+      "pmid": "26921362",
+      "title": "BRCA2 K3326X as a low-penetrance modifier rather than a high-risk allele.",
+      "abstract": "The K3326X truncation removes only 93 C-terminal residues, does not trigger NMD, and is observed at frequencies incompatible with classical Mendelian BRCA2 pathogenicity.",
+      "relevant_criteria_hint": ["BA1", "BS1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "38128",
+    "submitter_count": 24,
+    "note": "Classic PVS1 trap: nominally null variant but in last exon escaping NMD, with popmax > 1% triggering BA1; population_first calls B immediately, strict_rule may over-weight PVS1, insilico_first may be misled by CADD"
+  }
+}

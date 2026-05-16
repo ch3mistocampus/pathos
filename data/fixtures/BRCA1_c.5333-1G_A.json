@@ -1,0 +1,46 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.5333-1G>A",
+  "hgvs_c": "NM_007294.4:c.5333-1G>A",
+  "hgvs_p": null,
+  "gene": "BRCA1",
+  "consequence": "splice_acceptor_variant",
+  "chrom": "17",
+  "pos": 43057091,
+  "ref": "C",
+  "alt": "T",
+  "gnomad": {
+    "af": null,
+    "af_popmax": null,
+    "popmax_population": null,
+    "hom": 0,
+    "ac": 0,
+    "an": 1450000,
+    "note": "absent from gnomAD v4; canonical splice acceptor"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 34.0,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.99,
+    "spliceai_acceptor_loss": 0.99,
+    "note": "approximate; SpliceAI saturating signal at canonical -1 acceptor base"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "19383352",
+      "title": "Patient RNA studies of BRCA1 splice-site variants in the BRCT domain region.",
+      "abstract": "BRCA1 c.5333-1G>A abolishes the acceptor splice site of exon 22 and produces a frameshifted transcript predicted to undergo nonsense-mediated decay.",
+      "relevant_criteria_hint": ["PVS1", "PS3"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "55518",
+    "submitter_count": 14,
+    "note": "Canonical -1 splice acceptor in BRCA1; expected agreement on P but strategies should differ in cited criteria"
+  }
+}

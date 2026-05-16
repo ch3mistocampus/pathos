@@ -1,0 +1,45 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.3373C>T",
+  "hgvs_c": "NM_007294.4:c.3373C>T",
+  "hgvs_p": "p.Pro1125Ser",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43091420,
+  "ref": "G",
+  "alt": "A",
+  "gnomad": {
+    "af": 0.000031,
+    "af_popmax": 0.000079,
+    "popmax_population": "sas",
+    "hom": 0,
+    "ac": 44,
+    "an": 1442000,
+    "note": "Very rare, occasional South Asian observation"
+  },
+  "insilico": {
+    "revel": 0.482,
+    "cadd_phred": 22.6,
+    "alphamissense": 0.541,
+    "metarnn": 0.51,
+    "spliceai_max": 0.06,
+    "note": "approximate; predictors hover at decision thresholds without clear convergence"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "20104584",
+      "title": "Survey of BRCA1 missense variants in BRCT-linker regions.",
+      "abstract": "Variants in the BRCT linker including residue 1125 have been reported with mixed segregation evidence; no consensus on pathogenicity has emerged.",
+      "relevant_criteria_hint": ["PM2_supporting"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "55232",
+    "submitter_count": 6,
+    "note": "True VUS with no decisive evidence in any single line; strategies should split on whether borderline predictor scores justify any criterion"
+  }
+}

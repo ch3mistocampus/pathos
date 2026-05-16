@@ -1,0 +1,50 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.5074G>A",
+  "hgvs_c": "NM_007294.4:c.5074G>A",
+  "hgvs_p": "p.Asp1692Asn",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43067952,
+  "ref": "C",
+  "alt": "T",
+  "gnomad": {
+    "af": null,
+    "af_popmax": null,
+    "popmax_population": null,
+    "hom": 0,
+    "ac": 0,
+    "an": 1543000,
+    "note": "absent from gnomAD v4 across all populations"
+  },
+  "insilico": {
+    "revel": 0.892,
+    "cadd_phred": 28.1,
+    "alphamissense": 0.949,
+    "metarnn": 0.86,
+    "spliceai_max": 0.05,
+    "note": "approximate; predictors strongly converge on damaging"
+  },
+  "mavedb_function": {
+    "score": -0.18,
+    "category": "functional_normal",
+    "source": "Findlay_2018",
+    "note": "BRCA1 BRCT-domain saturation genome editing; within WT-like distribution, contradicting in-silico signal"
+  },
+  "literature": [
+    {
+      "pmid": "30209399",
+      "title": "Accurate classification of BRCA1 variants with saturation genome editing.",
+      "abstract": "p.Asp1692Asn maps to a WT-like score in the BRCA1 saturation genome editing dataset, despite high computational deleteriousness scores from REVEL and AlphaMissense.",
+      "relevant_criteria_hint": ["BS3"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "55411",
+    "submitter_count": 4,
+    "note": "Genuine in-silico vs functional disagreement; ClinVar consensus VUS pending additional family or case-control data"
+  }
+}

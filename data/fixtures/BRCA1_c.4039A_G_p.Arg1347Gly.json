@@ -1,0 +1,51 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.4039A>G",
+  "hgvs_c": "NM_007294.4:c.4039A>G",
+  "hgvs_p": "p.Arg1347Gly",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43082434,
+  "ref": "T",
+  "alt": "C",
+  "gnomad": {
+    "af": 0.000093,
+    "af_popmax": 0.00024,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 131,
+    "an": 1437000,
+    "note": "Rare but recurrent in European cohorts; PM2 not strictly applicable"
+  },
+  "insilico": {
+    "revel": 0.371,
+    "cadd_phred": 19.7,
+    "alphamissense": 0.482,
+    "metarnn": 0.39,
+    "spliceai_max": 0.02,
+    "note": "approximate; predictors mixed below the PP3/BP4 thresholds"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "21965345",
+      "title": "BRCA1 variant interpretation in BRCT and coiled-coil domains.",
+      "abstract": "Population data for p.Arg1347Gly in BRCA1 show recurrence in healthy controls; no segregation analysis is currently available.",
+      "relevant_criteria_hint": ["BS1_supporting"]
+    },
+    {
+      "pmid": "28104813",
+      "title": "Functional implications of BRCA1 non-BRCT missense variants.",
+      "abstract": "Multiple BRCA1 missense variants outside the RING and BRCT domains, including p.Arg1347Gly, lack robust functional or segregation data and remain VUS in ClinVar.",
+      "relevant_criteria_hint": ["BP1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_conflicting_interpretations",
+    "clinvar_id": "55256",
+    "submitter_count": 9,
+    "note": "ClinVar split between VUS and LB; population_first should lean LB on BS1-supporting; insilico_first and conservative should hold VUS"
+  }
+}

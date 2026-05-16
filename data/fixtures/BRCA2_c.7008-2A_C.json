@@ -1,0 +1,46 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.7008-2A>C",
+  "hgvs_c": "NM_000059.4:c.7008-2A>C",
+  "hgvs_p": null,
+  "gene": "BRCA2",
+  "consequence": "splice_acceptor_variant",
+  "chrom": "13",
+  "pos": 32346827,
+  "ref": "A",
+  "alt": "C",
+  "gnomad": {
+    "af": null,
+    "af_popmax": null,
+    "popmax_population": null,
+    "hom": 0,
+    "ac": 0,
+    "an": 1450000,
+    "note": "absent from gnomAD v4; canonical splice acceptor position"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 33.2,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.97,
+    "spliceai_acceptor_loss": 0.97,
+    "note": "approximate; SpliceAI strongly predicts acceptor loss at canonical -2 position"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "18465347",
+      "title": "Aberrant splicing of BRCA2 due to canonical splice-site mutations.",
+      "abstract": "Patient RNA studies of BRCA2 c.7008-2A>C demonstrate exon 14 skipping and out-of-frame transcript, consistent with loss of function.",
+      "relevant_criteria_hint": ["PVS1", "PS3"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "38059",
+    "submitter_count": 11,
+    "note": "Canonical -2 splice acceptor in a LoF-mechanism gene; strict_rule applies PVS1 + PM2 -> LP/P, others should converge but rationale differs"
+  }
+}

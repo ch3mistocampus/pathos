@@ -1,0 +1,56 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.5096G>A",
+  "hgvs_c": "NM_007294.4:c.5096G>A",
+  "hgvs_p": "p.Arg1699Gln",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43063930,
+  "ref": "C",
+  "alt": "T",
+  "gnomad": {
+    "af": 0.0000071,
+    "af_popmax": 0.0000133,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 11,
+    "an": 1548000,
+    "note": "extremely rare but present across European cohorts; not absent"
+  },
+  "insilico": {
+    "revel": 0.812,
+    "cadd_phred": 26.9,
+    "alphamissense": 0.913,
+    "metarnn": 0.78,
+    "spliceai_max": 0.02,
+    "note": "approximate; predictors lean damaging but not unanimous"
+  },
+  "mavedb_function": {
+    "score": -1.05,
+    "category": "intermediate",
+    "source": "Findlay_2018",
+    "note": "BRCA1 BRCT-domain saturation genome editing; partial loss-of-function, between WT-like and null"
+  },
+  "literature": [
+    {
+      "pmid": "22034289",
+      "title": "Analysis of BRCA1 variants in double-strand break repair by homologous recombination.",
+      "abstract": "p.Arg1699Gln shows reduced but not abolished homology-directed repair activity in cell-based assays, consistent with a moderate-risk allele.",
+      "relevant_criteria_hint": ["PS3_moderate"]
+    },
+    {
+      "pmid": "23867111",
+      "title": "ENIGMA classification of BRCA1 c.5096G>A (p.Arg1699Gln) as a moderate-risk allele.",
+      "abstract": "Multifactorial likelihood analysis of segregation, tumor pathology, and functional data places p.Arg1699Gln as an intermediate-risk variant with breast and ovarian cancer odds ratios below classical BRCA1 founder alleles.",
+      "relevant_criteria_hint": ["PS4_supporting", "PP1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "55408",
+    "submitter_count": 16,
+    "note": "ENIGMA expert panel treats p.Arg1699Gln as a moderate-risk allele; ClinVar consensus is VUS with conflicting submissions"
+  }
+}
