@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pathos Frontend
 
-## Getting Started
+Next.js 16 dashboard for the Pathos continuous tournament. Reads from the Modal backend (3 GET endpoints) and pushes user-submitted variants through Convex (which in turn calls Modal's `POST /classify`).
 
-First, run the development server:
+See [`HANDOFF.md`](./HANDOFF.md) for the full file map, what's done, and the punch list.
+See [`AGENTS.md`](./AGENTS.md) if you're an AI agent about to write code here — Next.js 16 has breaking changes versus older training data.
+
+## Running
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000   (or 3001 if 3000 is in use)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mocks ship with the app; no backend is required for any frontend dev work. The `MOCK_MODE` flag in `lib/api.ts` swaps the entire data layer between mocks and the live Modal API.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Going live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In `.env.local`:
 
-## Learn More
+```
+NEXT_PUBLIC_PATHOS_API_URL=https://ch3mistocampus--pathos-fastapi-app.modal.run
+NEXT_PUBLIC_CONVEX_URL=<value of CONVEX_URL from the repo-root .env.local>
+```
 
-To learn more about Next.js, take a look at the following resources:
+In `lib/api.ts:21`, change `MOCK_MODE = true` → `false`. Restart the dev server.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For user submissions (`/try`, `/login`), see the "Convex integration TODO" section in `HANDOFF.md` — Convex is provisioned but the client isn't yet imported here.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Pages
 
-## Deploy on Vercel
+| Path | Purpose |
+|---|---|
+| `/` | Hero + live tournament snapshot |
+| `/leaderboard` | Sortable table + EMA chart + recent rounds |
+| `/round/[id]` | Five reasoning traces side-by-side for one round |
+| `/strategies` | Tagline / philosophy / procedure per strategy |
+| `/try` | Submit your own variant (UI scaffolded; Convex wiring pending) |
+| `/login` | Auth form (UI scaffolded; provider wiring pending) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16.2 (App Router, Turbopack)
+- React 19
+- Tailwind CSS v4 + `tw-animate-css`
+- shadcn/ui (slate base, CSS variables)
+- recharts (EMA chart) · lucide-react (icons) · @base-ui/react (primitives)
+
+Backend contract lives in `lib/types.ts` — keep it in sync with `functions/orchestrator.py` and `functions/score_round.py` upstream.

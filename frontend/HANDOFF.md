@@ -1,18 +1,12 @@
 # Pathos Frontend — Handoff
 
-This directory contains the Pathos web frontend. It runs end-to-end against
-mock data today; flipping a single flag in `lib/api.ts` and setting one env var
-moves it to the Modal backend.
+This directory contains the Pathos web frontend. It runs end-to-end against mock data today; flipping one flag in `lib/api.ts` and setting two env vars moves it to the Modal + Convex backends.
 
 ## Project context
 
-Pathos is a continuous benchmark tournament where five Claude agents with
-distinct ACMG/AMP variant-interpretation strategies compete to classify real
-ClinVar variants. The backend is Modal + Anthropic (in active development by
-other agents — do not modify it from here); this frontend is the demo face.
+Pathos is a continuous benchmark tournament where five Claude agents with distinct ACMG/AMP variant-interpretation strategies compete on real ClinVar BRCA1/2 variants. The backend (Modal + Anthropic) is deployed and the 90 s scheduler is running. A second backend (Convex) handles user-submitted variants from `/try`. This frontend is the demo face for both.
 
-Full backend build plan lives at `../` (the parent repo). See the root
-`README.md` and the user's design doc.
+Top-level project doc + architecture diagram lives at the repo root `README.md`.
 
 ## Stack
 
@@ -20,206 +14,176 @@ Full backend build plan lives at `../` (the parent repo). See the root
 - **React 19**
 - **TypeScript**
 - **Tailwind CSS v4** + `tw-animate-css`
-- **shadcn/ui** primitives — `button`, `card`, `table`, `badge`, `tabs`,
-  `separator`, `scroll-area`, `chart` already installed (CSS variables preset,
-  slate base)
+- **shadcn/ui** primitives (button, card, table, badge, tabs, separator, scroll-area, chart — slate base, CSS variables preset)
 - **recharts** for the EMA chart
 - **lucide-react** for icons
+- **@base-ui/react** for headless primitives
 
-> **Read `AGENTS.md` before writing Next.js code.** This is Next 16 — read the
-> guide in `node_modules/next/dist/docs/` rather than relying on older App
-> Router conventions. In particular: `error.tsx` accepts an `unstable_retry`
-> prop in v16.2 alongside the legacy `reset`; we use `reset` for now.
+> **Read `AGENTS.md` before writing Next.js code.** This is Next 16 — read the guide in `node_modules/next/dist/docs/` rather than relying on older App Router conventions. `error.tsx` accepts an `unstable_retry` prop in v16.2 alongside the legacy `reset`; we use `reset` for now.
 
 ## Current file map
 
 ```
 frontend/
 ├── app/
-│   ├── layout.tsx                 — root layout, fonts, ThemeProvider, SiteNav
-│   ├── globals.css                — Tailwind + shadcn CSS vars + .dark overrides
-│   ├── page.tsx                   — renders <HeroSection />
-│   ├── opengraph-image.tsx        — edge-rendered OG image (also reused for Twitter)
-│   ├── twitter-image.tsx          — re-exports opengraph-image
-│   ├── loading.tsx                — root suspense fallback (subtle inline)
-│   ├── error.tsx                  — root error boundary (Client Component, reset)
-│   ├── not-found.tsx              — root 404 (catches unmatched URLs app-wide)
-│   ├── leaderboard/page.tsx       — async server page: getLeaderboard + getRecentRounds
-│   ├── strategies/page.tsx        — async server page: STRATEGY_DEFINITIONS + history
-│   └── round/[id]/
-│       ├── page.tsx               — async server page: getRound(id)
-│       ├── loading.tsx            — round-specific skeleton (header + evidence + 5 trace cards)
-│       └── not-found.tsx          — round 404 with link back to /leaderboard
+│   ├── layout.tsx                — root layout, fonts, ThemeProvider, SiteNav
+│   ├── globals.css               — Tailwind + shadcn CSS vars + .dark overrides
+│   ├── page.tsx                  — landing: hero + tournament arena pedestal + live leaderboard
+│   ├── opengraph-image.tsx       — edge-rendered OG image (1200×630, reused for Twitter)
+│   ├── twitter-image.tsx         — re-exports opengraph-image
+│   ├── _shared-og.tsx            — OG image helpers
+│   ├── loading.tsx               — root suspense fallback
+│   ├── error.tsx                 — root error boundary (Client Component, reset prop)
+│   ├── not-found.tsx             — root 404
+│   ├── leaderboard/page.tsx      — async server page: getLeaderboard + getRecentRounds
+│   ├── strategies/page.tsx       — async server page: STRATEGY_DEFINITIONS + history
+│   ├── round/[id]/
+│   │   ├── page.tsx              — async server page: getRound(id) → 5 trace cards
+│   │   ├── loading.tsx           — round-specific skeleton
+│   │   └── not-found.tsx         — round 404 with link back to /leaderboard
+│   ├── try/page.tsx              — renders <PromptLab /> (Convex wiring TODO)
+│   └── login/page.tsx            — renders <LoginForm /> (auth provider TODO)
+│
 ├── components/
-│   ├── ui/                        — shadcn primitives (do not edit by hand)
-│   ├── site-nav.tsx               — Client Component; active-link styling via usePathname
-│   ├── hero-section.tsx           — tagline + pitch + CTAs + 3 pillars + 4-step "how a round
-│   │                                works" + inline architecture SVG diagram
-│   ├── leaderboard-dashboard.tsx  — Client shell that owns sort + chart-isolation state
-│   ├── leaderboard-table.tsx      — sortable header buttons, leader ring, mobile card stack,
-│   │                                agent name = toggle for EMA chart isolation
-│   ├── ema-chart.tsx              — recharts via shadcn chart container, tabs for
-│   │                                Last 10 / Last 50 / All rounds, focused-agent isolation
-│   ├── trace-card.tsx             — one agent's verdict + criteria chips + scrollable reasoning
-│   │                                + score breakdown + self-reported confidence
-│   ├── strategy-card.tsx          — tagline + philosophy + procedure steps + per-agent
-│   │                                confusion matrix from history
-│   ├── confusion-matrix.tsx       — 5x5 heat grid; primary tint on diagonal, destructive off
-│   ├── animated-number.tsx        — rAF tween for numeric values (respects reduced-motion)
-│   ├── auto-refresh.tsx           — Client Component that calls router.refresh() every 30s
-│   ├── theme-provider.tsx         — light/dark context + pre-hydration IIFE script
-│   └── theme-toggle.tsx           — sun/moon button in the nav
+│   ├── ui/                       — shadcn primitives (do not edit by hand)
+│   ├── arena/                    — pedestal + sparkline / bar-spark / live-dot icons used by /
+│   ├── auth/                     — auth-provider, login-form (UI only — not yet wired)
+│   ├── prompt-lab/               — /try page's variant submission UI (Convex hook TODO)
+│   ├── site-nav.tsx              — Client Component; active-link via usePathname
+│   ├── live-countdown.tsx        — 90 s scheduler countdown banner
+│   ├── auto-refresh.tsx          — router.refresh() every 30 s
+│   ├── leaderboard-dashboard.tsx — Client shell owning sort + chart-isolation state
+│   ├── leaderboard-table.tsx     — sortable headers, leader ring, mobile card stack
+│   ├── ema-chart.tsx             — recharts/shadcn chart; tabs for Last 10 / 50 / All
+│   ├── trace-card.tsx            — verdict badge + criteria chips + reasoning + score
+│   ├── strategy-card.tsx         — tagline + philosophy + procedure + confusion matrix
+│   ├── confusion-matrix.tsx      — 5×5 heat grid; primary on diagonal, destructive off
+│   ├── animated-number.tsx       — rAF tween (honors reduced-motion)
+│   ├── theme-provider.tsx        — light/dark context + pre-hydration IIFE
+│   └── theme-toggle.tsx          — sun/moon button in SiteNav
+│
 └── lib/
-    ├── types.ts                   — TS types matching backend Modal Dict + scores.json shapes
-    ├── mock-data.ts               — synthesized leaderboard + 60-round histories + STRATEGY_DEFINITIONS
-    ├── api.ts                     — MOCK_MODE flag; getLeaderboard / getRecentRounds / getRound
-    └── utils.ts                   — shadcn `cn()` helper
+    ├── types.ts                  — TS contract: LeaderboardEntry, Round, RoundSummary, etc.
+    ├── mock-data.ts              — synthesized leaderboard + ~60-round histories + STRATEGY_DEFINITIONS
+    ├── api.ts                    — MOCK_MODE flag; getLeaderboard / getRecentRounds / getRound
+    ├── parsers.ts                — runtime validators (parsers between api responses and types)
+    └── utils.ts                  — shadcn `cn()` helper
 ```
 
 ## What is actually done
 
 ### Landing `/`
-- Tagline badge (`Claude Code Hackathon · May 2026`), decisive H1.
-- 3-sentence pitch tying ClinVar rotations to five prompting strategies + 90 s cadence.
-- Two CTAs: `View the leaderboard` → `/leaderboard`, `See the five strategies` → `/strategies`.
-- Three pillar cards: `Continuous benchmark`, `Strategy comparison`, `Reasoning is first-class`.
-- Four-step "How a round works" band (`01–04`).
-- Inline SVG architecture diagram: ClinVar → Orchestrator → Five Claude strategies → Scorer → UI.
+- Custom hero composition (no separate `hero-section.tsx` — inline in `page.tsx`):
+  - Headline + 3-sentence pitch + two CTAs (`/leaderboard`, `/strategies`).
+  - **ArenaPedestal** centerpiece with five orbiting agent cards (verdict + sparkline + confidence) layered around it; live consensus card at the bottom.
+  - Live leaderboard panel in the right column.
+  - "Evidence at a glance" panel summarizing population / in-silico / functional / splice signals from the current variant.
+- TrustStrip with the evidence stack names (ClinVar, gnomAD v4, MaveDB, AlphaMissense + REVEL + CADD, SpliceAI).
+- "Standard section" with 4 feature cards.
+- `ReasoningPanel` showing leader's applied criteria + reasoning trace inline.
+- `ReportPreview` dark-section closing with leader EMA / rounds / strategies count tiles.
 
 ### Leaderboard `/leaderboard`
-- Async server page fetches `getLeaderboard()` + `getRecentRounds(10)` in parallel.
-- Renders `<LeaderboardDashboard>` (Client) which lifts sort + agent-isolation state.
-- `LeaderboardTable`: sortable headers (Agent / EMA / Rounds) with ascending/descending
-  glyphs, leader row ring-highlighted regardless of sort column, agent name is a button
-  that isolates that agent in the EMA chart and dims the other rows.
-- `LeaderboardTable` also has a mobile card-stack rendering for narrow viewports
-  with a chip-row sort selector.
-- `EmaChart` (recharts via shadcn chart container): legend, hover tooltips, EMA smoothing
-  applied per-round (`alpha = 0.1`), tabs for `Last 10 / Last 50 / All rounds`, line
-  bolds when an agent is focused.
+- Async server page; parallel `getLeaderboard()` + `getRecentRounds(10)`.
+- `LeaderboardDashboard` (Client) lifts sort + agent-isolation state.
+- `LeaderboardTable`: sortable headers, leader ring-highlighted, agent name toggles EMA chart isolation. Mobile card stack on narrow viewports.
+- `EmaChart`: recharts via shadcn chart container; legend, tooltips, EMA smoothing (α = 0.1), tabs for Last 10 / 50 / All rounds, focused-agent line bold.
 - `<AutoRefresh>` hits `router.refresh()` every 30 s.
-- "Recent rounds" grid (sm:2 / lg:3 columns) of clickable round summaries linking to
-  `/round/[id]`.
+- Recent rounds grid linking to `/round/[id]`.
 
 ### Round inspector `/round/[id]`
-- Async server page fetches `getRound(id)`; calls `notFound()` if missing.
-- Header: round ID (mono), variant ID, gene/consequence/difficulty/truth badges.
-- Evidence pack `Card`: HGVS + chromosome coords, then 3-column gnomAD / In-silico / Functional
-  panel with mono numerics.
-- Side-by-side reasoning grid: `xl:grid-cols-5` (md:2, stacks on mobile) of `<TraceCard>`s.
-- `TraceCard`: verdict badge (`default` / `destructive` based on truth match), `truth` badge,
-  match-vs-delta ribbon, applied criteria chips, scrollable reasoning prose (`ScrollArea`,
-  ~180 px), score breakdown box (composite/accuracy/criterion_match), self-reported confidence.
-- `<AutoRefresh>` mirrors the leaderboard's 30 s tick.
+- Async server page; `notFound()` if missing.
+- Header: round id (mono), variant id, gene / consequence / difficulty / truth badges.
+- Evidence pack card with HGVS + chromosome coords + gnomAD / in-silico / functional rows.
+- Side-by-side reasoning grid (`xl:grid-cols-5`, `md:2`, stacks on mobile) of `<TraceCard>`s with verdict badges, criteria chips, scrollable reasoning, score breakdown, self-reported confidence.
+- `<AutoRefresh>` 30 s tick.
 
 ### Strategies `/strategies`
-- Async server page reads `STRATEGY_DEFINITIONS` (in `lib/mock-data.ts`) and per-agent history
-  from `getLeaderboard()`.
-- Renders 5 `<StrategyCard>` in a `md:grid-cols-2` grid.
-- `StrategyCard`: agent slug (mono) → label → tagline (`CardDescription`) → philosophy paragraph
-  → `Procedure` enumerated list (mirrored from `functions/agents/prompts.py`) → per-agent
-  `ConfusionMatrix` (5x5 heat grid from `entry.history`).
-- Footnote references the shared `ACMG_REFERENCE` block in the Python prompts.
+- 5× `<StrategyCard>` in a `md:grid-cols-2` grid.
+- Each card: agent slug → label → tagline → philosophy → numbered procedure (mirrored from `functions/agents/prompts.py`) → per-agent `<ConfusionMatrix>` 5×5 heat grid from history.
+
+### Try `/try` (UI stub — Convex wiring TODO)
+- `<PromptLab />` UI: variant entry form + per-strategy preset toggles.
+- Currently does **not** call Convex. Submit handler is a placeholder.
+
+### Login `/login` (UI stub — auth wiring TODO)
+- `<LoginForm />` UI for the beta-access path.
+- Currently does **not** authenticate; just a styled form.
 
 ### Cross-cutting
-- `SiteNav` is a Client Component with active-link styling via `usePathname`. Active links
-  use `text-foreground`, inactive use `text-foreground/60 hover:text-foreground`,
-  `aria-current="page"` set on the active link.
-- Light/dark theme is fully wired: `ThemeProvider` + `THEME_INIT_SCRIPT` IIFE in the
-  `<head>` prevents FOUC; toggle lives in `SiteNav` (`ThemeToggle`). Persisted to
-  `localStorage` (`pathos-theme`).
-- `AnimatedNumber` tweens leaderboard EMA + rounds counts on refresh.
-- `app/loading.tsx`, `app/error.tsx`, `app/not-found.tsx`, `app/round/[id]/loading.tsx`,
-  `app/round/[id]/not-found.tsx` provide route-level streaming + error + 404 UX.
-- `opengraph-image.tsx` ships a 1200x630 PNG; `twitter-image.tsx` re-exports it for the
-  `summary_large_image` card.
+- `SiteNav`: Client Component, active-link styling via `usePathname` + `aria-current="page"`.
+- Theme: `ThemeProvider` + pre-hydration IIFE prevents FOUC; `ThemeToggle` in nav; persisted to `localStorage` as `pathos-theme`.
+- `AnimatedNumber` tweens numeric values on refresh (respects `prefers-reduced-motion`).
+- `app/loading.tsx`, `app/error.tsx`, `app/not-found.tsx`, `app/round/[id]/loading.tsx`, `app/round/[id]/not-found.tsx` give every route streaming + error + 404 UX.
+- `opengraph-image.tsx` ships a 1200×630 PNG; `twitter-image.tsx` re-exports it for `summary_large_image`.
+
+## Convex integration — TODO
+
+The Convex backend (in `../convex/`) is **provisioned and deployed** but the frontend client isn't imported yet. To wire it:
+
+1. `npm install convex` (from `frontend/`).
+2. Add `NEXT_PUBLIC_CONVEX_URL=<value from repo-root .env.local CONVEX_URL>` to `frontend/.env.local`.
+3. In `app/layout.tsx`, wrap the body in `<ConvexProvider client={new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!)}>`.
+4. In `components/prompt-lab/prompt-lab.tsx`, replace the stub submit handler with:
+   ```ts
+   import { useMutation, useQuery } from "convex/react";
+   import { api } from "@/convex/_generated/api"; // or via a path alias to ../convex/_generated
+
+   const submit = useMutation(api.submissions.submitVariant);
+   const submissionId = await submit({ variant });
+   const submission = useQuery(api.submissions.getSubmission, { id: submissionId });
+   // submission.status auto-updates; render predictions when status === "done"
+   ```
+5. When ready for real auth: install `@convex-dev/auth`, configure a provider (password or OAuth), and replace `LoginForm`'s stub with the provider's `useAuthActions`. The Convex backend already reads `ctx.auth.getUserIdentity()` so it just starts honoring identities.
+
+Path alias note: the `convex/` directory is at the repo root (`../convex/` from here), not inside `frontend/`. Either add a `paths` entry in `frontend/tsconfig.json` (`"@/convex/*": ["../convex/*"]`) or import via a relative path.
+
+## Going live on the read path
+
+The 3 GET endpoints (`/leaderboard`, `/rounds`, `/rounds/{id}`) are already live and tested. To flip the frontend onto them:
+
+1. Add to `frontend/.env.local`:
+   ```
+   NEXT_PUBLIC_PATHOS_API_URL=https://ch3mistocampus--pathos-fastapi-app.modal.run
+   ```
+2. In `lib/api.ts:21`, change `MOCK_MODE = true` → `false`.
+3. Restart `npm run dev`.
+
+The fetchers (`getLeaderboard`, `getRecentRounds`, `getRound`) will then hit `/leaderboard`, `/rounds?limit=N`, and `/rounds/{round_id}` on that base. The Round-shaped JSON is identical to the mock data (same field names + value forms — code form for `RoundSummary.truth_classification`, long form for `Round.truth.classification`).
 
 ## Real remaining punch list
 
-The "must-haves" from earlier sessions have largely landed. What's left:
+- [ ] **Convex client wiring** (see above) — make `/try` actually submit.
+- [ ] **Auth provider wiring** — Convex Auth or Clerk; replace `LoginForm` stub.
+- [ ] **Aria + screen-reader announces** for sort + isolation modes on the leaderboard (sort buttons exist; verify `aria-sort` + a polite live region for sort/isolation changes).
+- [ ] **Failure UX** in the data layer — toast/inline alert on parse/network failure; consider a Zod parser at `lib/api.ts` to fail loudly and fall back to last-known-good.
+- [ ] **Contract tests** — runtime validation between backend payloads and `lib/types.ts` (sibling to the Zod parsers).
+- [ ] **Strategies procedure parity** — `STRATEGY_DEFINITIONS.procedure` is mirrored from `functions/agents/prompts.py`. Watch for drift when prompts change.
+- [ ] **Live-update animation** — leaderboard could flash the row whose EMA changed on refresh (subtle background pulse).
+- [ ] **Criterion glossary tooltip** — `/round/[id]` criterion chips could pop the ACMG/AMP rule definition.
+- [ ] **Keyboard shortcut** — `Esc` to clear `focusedAgent` on the leaderboard.
+- [ ] **Empty states** — cold start (no rounds yet) should render a "no rounds yet" placeholder rather than an empty chart frame.
 
-- [ ] **Aria + screen-reader announces for sort + isolation modes** — pass on the
-  leaderboard table for keyboard-only and SR users (sort buttons exist; double-check
-  `aria-sort` + the polite live region copy).
-- [ ] **Failure UX in the data layer** — toast or inline alert when `fetchJson` 5xx's or
-  the response shape drifts; consider a Zod parser at the `lib/api.ts` boundary to fail
-  loudly and fall back to last-known-good cache in product mode.
-- [ ] **Contract tests** — runtime validation between backend payloads and `lib/types.ts`
-  (sibling to the Zod parsers above). Pin to backend orchestrator + score_round outputs.
-- [ ] **Strategies procedure block parity** — Codex is pulling content from
-  `functions/agents/prompts.py` into `STRATEGY_DEFINITIONS.procedure`. Keep an eye on
-  drift when prompts change.
-- [ ] **Hero polish** — optional: curated screenshot/still beside the architecture
-  diagram for visceral realism.
-- [ ] **Live-update animation** — `AnimatedNumber` exists; the leaderboard could also
-  flash the row whose EMA changed on refresh (subtle background pulse).
-- [ ] **Round inspector deep-link to ACMG criterion glossary** — clicking a criterion
-  chip could pop a tooltip with the ACMG/AMP rule definition.
-- [ ] **Keyboard shortcut for chart isolation reset** — `Esc` to clear `focusedAgent`.
-- [ ] **Empty states** — zero rounds yet (cold start) should not render an empty
-  chart frame; render a "no rounds yet" placeholder.
-
-The earlier "Nice-to-have polish" list mostly landed: confusion matrix per strategy,
-mobile leaderboard, theme toggle with persistence, animated counters, OG/Twitter card,
-auto-refresh. The architecture diagram is rendered in `HeroSection` via an inline SVG.
-
-## Integration with the Modal backend
-
-- `lib/types.ts` is the contract. The shapes mirror the backend Modal Dict
-  (`functions/orchestrator.py`), `scores.json` (`functions/score_round.py`), and agent
-  `run_agent` output (`functions/agents/base.py`). **Do not change shapes without
-  coordinating with the backend agent.**
-- To flip from mock to live:
-  1. Set `NEXT_PUBLIC_PATHOS_API_URL` in `.env.local` (template is `.env.local.example`).
-  2. Change `MOCK_MODE = true` to `MOCK_MODE = false` in `lib/api.ts`.
-  3. The fetchers (`getLeaderboard`, `getRecentRounds`, `getRound`) will hit
-     `/leaderboard`, `/rounds?limit=N`, and `/rounds/:id` respectively on that base URL.
-- The backend exposes a Round-shaped JSON object via the orchestrator
-  (work in progress on the Modal side). Endpoint URL TBD — coordinate with the
-  backend agent before flipping `MOCK_MODE`.
-
-## New scaffold pieces (this pass)
-
-- `app/loading.tsx` — root suspense fallback. Small pulsing dot + `loading` label.
-- `app/error.tsx` — root error boundary (Client Component, `"use client"`). Owns the
-  failure copy ("Something went wrong.") and exposes a `Try again` button calling
-  the `reset` prop. (`unstable_retry` is also available in Next 16.2; we use `reset`
-  for now to match the existing button.)
-- `app/not-found.tsx` — root 404. Two CTAs: home + leaderboard.
-- `app/round/[id]/loading.tsx` — skeletonized version of the round inspector layout
-  (header strip + evidence card + 5 trace card placeholders).
-- `app/round/[id]/not-found.tsx` — round-specific 404 with link back to `/leaderboard`.
-- `.env.local.example` — documents `NEXT_PUBLIC_PATHOS_API_URL`.
-- `components/site-nav.tsx` — converted to a Client Component to apply active-link
-  styling via `usePathname()` from `next/navigation`.
-
-## Running it
-
-```bash
-cd frontend
-npm run dev
-# http://localhost:3000
-```
-
-That's it — no backend needed for any frontend dev work right now.
-
-## Demo flow (target)
-
-1. Open `/` — hero hooks the audience in 10 seconds.
-2. Click "leaderboard" → `/leaderboard` shows EMA chart with visible strategy separation, table sorted by EMA.
-3. Click a recent round → `/round/[id]` reveals 5 reasoning traces side-by-side. Read one out loud — Claude's thinking is visible.
-4. Optionally `/strategies` to explain the prompt strategies.
+Mostly landed in earlier passes: confusion matrix per strategy, mobile leaderboard, theme toggle with persistence, animated counters, OG/Twitter card, auto-refresh, hero composition with arena pedestal.
 
 ## Constraints to honor
 
-- Hackathon timeline. Don't over-engineer — clean and demo-friendly beats clever.
-- Match the existing aesthetic in the user's other projects (Flat6 Search, Hormone Research): minimal, technical, slightly editorial.
-- Don't change `lib/types.ts` shapes without updating the backend in lockstep.
-- Don't add emojis unless the user explicitly asks.
-- Read `AGENTS.md` before writing Next.js code — Next 16 has breaking changes from older App Router conventions.
+- Hackathon timeline. Clean and demo-friendly beats clever.
+- Match the existing aesthetic (clinical, slightly editorial; mostly slate with subtle blue accents).
+- Don't change `lib/types.ts` shapes without coordinating with the backend (`functions/orchestrator.py` + `functions/score_round.py`).
+- No emojis unless the user explicitly asks.
+- Read `AGENTS.md` before writing Next.js code.
 
-## Open questions to confirm with the user
+## Demo flow (target)
 
-1. Brand color — currently using shadcn `slate` defaults. Want a custom accent (e.g. a deep purple or a clinical green)?
-2. Streamlit dashboard (originally planned in `../dashboard/`) — keep it as a backup or remove now that we have this Next.js frontend?
-3. Demo audience — is the demo to genomics specialists or generalist judges? Affects how much ACMG jargon to leave un-explained.
+1. Open `/` — arena pedestal with five orbiting agents hooks the audience in 5–10 seconds.
+2. Click "View the leaderboard" → `/leaderboard` shows EMA chart with strategy separation, table sorted by EMA, recent rounds grid.
+3. Click a recent round (ideally one with divergence) → `/round/[id]` reveals five reasoning traces side-by-side. Read one out loud — Claude's thinking is visible.
+4. Optionally `/strategies` to explain the prompting philosophies.
+5. Optionally `/try` to paste a variant and watch the agents classify it live (once Convex is wired).
+
+## Open questions
+
+- Brand color — currently a clinical slate/blue. Want a custom accent or theme drop?
+- Auth provider — Convex Auth (password or OAuth) vs Clerk via Vercel Marketplace?
+- Demo audience — genomics specialists or generalist judges? Affects how much ACMG jargon to leave un-explained.
