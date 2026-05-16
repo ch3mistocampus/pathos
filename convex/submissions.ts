@@ -12,7 +12,13 @@
  * without code changes.
  */
 import { v } from "convex/values";
-import { mutation, query, action, internalMutation, internalQuery } from "./_generated/server";
+import {
+  mutation,
+  query,
+  internalAction,
+  internalMutation,
+  internalQuery,
+} from "./_generated/server";
 import { internal } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 
@@ -22,10 +28,12 @@ const PATHOS_API_URL =
 // ─── Client-facing ─────────────────────────────────────────────────────────
 
 export const submitVariant = mutation({
-  args: { variant: v.any() },
+  args: { variant: v.any(), user_id: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    const user_id = identity?.subject ?? "anonymous";
+    // Identity from real auth wins; fall back to the explicit arg the demo
+    // frontend passes from its localStorage session; otherwise "anonymous".
+    const user_id = identity?.subject ?? args.user_id ?? "anonymous";
 
     const submissionId = await ctx.db.insert("submissions", {
       user_id,
@@ -44,10 +52,10 @@ export const submitVariant = mutation({
 });
 
 export const getMySubmissions = query({
-  args: {},
-  handler: async (ctx) => {
+  args: { user_id: v.optional(v.string()) },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    const user_id = identity?.subject ?? "anonymous";
+    const user_id = identity?.subject ?? args.user_id ?? "anonymous";
 
     return await ctx.db
       .query("submissions")
@@ -116,7 +124,7 @@ export const _fail = internalMutation({
   },
 });
 
-export const runClassification = action({
+export const runClassification = internalAction({
   args: { submissionId: v.id("submissions") },
   handler: async (ctx, args) => {
     const submission = await ctx.runQuery(internal.submissions._get, {

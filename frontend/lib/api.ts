@@ -19,7 +19,7 @@ import {
 } from "./parsers";
 import type { LeaderboardEntry, Round, RoundSummary } from "./types";
 
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 const API_BASE = process.env.NEXT_PUBLIC_PATHOS_API_URL ?? "";
 

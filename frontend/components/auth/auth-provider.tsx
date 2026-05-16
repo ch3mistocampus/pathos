@@ -9,15 +9,28 @@ import {
   type ReactNode,
 } from "react";
 
-type AuthUser = {
+// Hackathon demo auth: single hard-coded credential pair. NOT real auth — this
+// is a localStorage flag that the Convex submitVariant mutation reads to stamp
+// `user_id` on submissions. Swap for Convex Auth or Clerk once we want real
+// multi-user identity.
+const DEMO_CREDENTIALS = {
+  username: "claude",
+  password: "hackathon",
+};
+
+export type AuthUser = {
+  username: string;
+  /** Legacy fields kept so existing UI (`user.name`, `user.email`) doesn't break. */
   name: string;
   email: string;
 };
 
+type LoginResult = { ok: true } | { ok: false; error: string };
+
 type AuthContextValue = {
   user: AuthUser | null;
   ready: boolean;
-  login: (email: string, name?: string) => void;
+  login: (username: string, password: string) => LoginResult;
   logout: () => void;
 };
 
@@ -27,15 +40,6 @@ let cachedRawUser: string | null | undefined;
 let cachedUser: AuthUser | null = null;
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-
-function deriveName(email: string): string {
-  const localPart = email.split("@")[0] || "Researcher";
-  return localPart
-    .split(/[._-]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
 
 function readStoredUser(): AuthUser | null {
   if (typeof window === "undefined") return null;
@@ -48,11 +52,15 @@ function readStoredUser(): AuthUser | null {
       return null;
     }
     const parsed = JSON.parse(raw) as Partial<AuthUser>;
-    if (!parsed.email || !parsed.name) {
+    if (!parsed.username) {
       cachedUser = null;
       return null;
     }
-    cachedUser = { email: parsed.email, name: parsed.name };
+    cachedUser = {
+      username: parsed.username,
+      name: parsed.name ?? parsed.username,
+      email: parsed.email ?? `${parsed.username}@pathos.local`,
+    };
     return cachedUser;
   } catch {
     cachedRawUser = undefined;
@@ -81,14 +89,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => null,
   );
 
-  const login = useCallback((email: string, name?: string) => {
-    const normalizedEmail = email.trim().toLowerCase();
-    const nextUser = {
-      email: normalizedEmail,
-      name: name?.trim() || deriveName(normalizedEmail),
+  const login = useCallback((username: string, password: string): LoginResult => {
+    const u = username.trim().toLowerCase();
+    if (u !== DEMO_CREDENTIALS.username || password !== DEMO_CREDENTIALS.password) {
+      return {
+        ok: false,
+        error:
+          "Invalid credentials. Hackathon demo accepts username 'claude' and password 'hackathon'.",
+      };
+    }
+    const nextUser: AuthUser = {
+      username: u,
+      name: u.charAt(0).toUpperCase() + u.slice(1),
+      email: `${u}@pathos.local`,
     };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser));
     emitAuthChange();
+    return { ok: true };
   }, []);
 
   const logout = useCallback(() => {

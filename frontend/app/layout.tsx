@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { SiteNav } from "@/components/site-nav";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme-provider";
 
 const geistSans = Geist({
@@ -64,7 +65,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider>
-          <AuthProvider>
+          <ConvexClientProvider>
+            <AuthProvider>
             {/* Ambient page wash — soft icy-blue + a quiet cobalt bloom. Pure
                 decoration, never receives pointer events. */}
             <div
@@ -97,7 +99,8 @@ export default function RootLayout({
               <SiteNav />
               <main className="flex-1">{children}</main>
             </div>
-          </AuthProvider>
+            </AuthProvider>
+          </ConvexClientProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMutation, useQuery } from "convex/react";
 import {
   Beaker,
   CheckCircle2,
@@ -13,6 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/auth/auth-provider";
+import { api } from "@convex/_generated/api";
+import type { Id } from "@convex/_generated/dataModel";
 import { MOCK_ROUND, STRATEGY_DEFINITIONS } from "@/lib/mock-data";
 import {
   AGENT_LABEL,
@@ -81,16 +84,18 @@ function scoreClassification(classification: Classification): number {
 export function PromptLab() {
   const router = useRouter();
   const { ready, user } = useAuth();
+  const submitVariant = useMutation(api.submissions.submitVariant);
   const [agent, setAgent] = useState<AgentName>("functional_first");
   const [preset, setPreset] = useState<Preset>("balanced");
   const [prompt, setPrompt] = useState(defaultPrompt("functional_first"));
-  const [isRunning, setIsRunning] = useState(false);
-  const [result, setResult] = useState<{
-    classification: Classification;
-    confidence: number;
-    score: number;
-    criteria: string[];
-  } | null>(null);
+  const [submissionId, setSubmissionId] = useState<Id<"submissions"> | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Subscribe to the submission row; Convex auto-refetches as status flips.
+  const submission = useQuery(
+    api.submissions.getSubmission,
+    submissionId ? { id: submissionId } : "skip",
+  );
 
   useEffect(() => {
     if (ready && !user) {
@@ -99,6 +104,33 @@ export function PromptLab() {
   }, [ready, router, user]);
 
   const challenge = MOCK_ROUND.variant;
+
+  const isRunning =
+    submissionId !== null &&
+    submission != null &&
+    submission.status !== "done" &&
+    submission.status !== "error";
+
+  const result = useMemo<{
+    classification: Classification;
+    confidence: number;
+    score: number;
+    criteria: string[];
+  } | null>(() => {
+    if (!submission || submission.status !== "done" || !submission.predictions) {
+      return null;
+    }
+    const pred = submission.predictions[agent];
+    if (!pred) return null;
+    const classification = pred.classification as Classification;
+    const score = scoreClassification(classification);
+    return {
+      classification,
+      confidence: typeof pred.confidence === "number" ? pred.confidence : score,
+      score,
+      criteria: Array.isArray(pred.applied_criteria) ? pred.applied_criteria : [],
+    };
+  }, [agent, submission]);
 
   const promptStats = useMemo(() => {
     const words = prompt.trim().split(/\s+/).filter(Boolean).length;
@@ -110,25 +142,24 @@ export function PromptLab() {
   function updateAgent(nextAgent: AgentName) {
     setAgent(nextAgent);
     setPrompt(defaultPrompt(nextAgent));
-    setResult(null);
   }
 
-  function onRun(event: FormEvent<HTMLFormElement>) {
+  async function onRun(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsRunning(true);
-    window.setTimeout(() => {
-      const classification = inferClassification(prompt, preset);
-      const score = scoreClassification(classification);
-      const confidence =
-        preset === "conservative" ? Math.min(0.86, score) : Math.min(0.96, score + 0.04);
-      setResult({
-        classification,
-        confidence,
-        score,
-        criteria: promptStats.criteria.length ? promptStats.criteria : ["PS3", "PM2", "PP3"],
+    if (!user) return;
+    setErrorMessage(null);
+    setSubmissionId(null);
+    try {
+      const id = await submitVariant({
+        variant: challenge,
+        user_id: user.username,
       });
-      setIsRunning(false);
-    }, 650);
+      setSubmissionId(id);
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error ? err.message : "Failed to submit variant",
+      );
+    }
   }
 
   if (!ready || !user) {
@@ -151,7 +182,7 @@ export function PromptLab() {
               <Beaker className="size-3" aria-hidden />
               Prompt lab
             </Badge>
-            <span className="text-sm text-muted-foreground">Signed in as {user.email}</span>
+            <span className="text-sm text-muted-foreground">Signed in as {user.username}</span>
           </div>
           <h1 className="mt-3 text-4xl font-semibold leading-[1.02] tracking-[-0.025em] sm:text-5xl">
             Try your own interpretation strategy.
@@ -208,7 +239,7 @@ export function PromptLab() {
                     checked={preset === name}
                     onChange={() => {
                       setPreset(name);
-                      setResult(null);
+                      setSubmissionId(null);
                     }}
                     className="mt-1"
                   />
@@ -240,7 +271,7 @@ export function PromptLab() {
             value={prompt}
             onChange={(event) => {
               setPrompt(event.target.value);
-              setResult(null);
+              setSubmissionId(null);
             }}
             spellCheck={false}
             className="min-h-[520px] w-full resize-y rounded-lg border border-input bg-card p-4 font-mono text-[13px] leading-relaxed outline-none transition focus:border-primary focus:ring-3 focus:ring-ring/30"
@@ -251,7 +282,7 @@ export function PromptLab() {
               variant="outline"
               onClick={() => {
                 setPrompt(defaultPrompt(agent));
-                setResult(null);
+                setSubmissionId(null);
               }}
             >
               Reset prompt
@@ -297,6 +328,24 @@ export function PromptLab() {
 
           <section className="rounded-xl border border-border/70 bg-background/75 p-4 pathos-shadow">
             <div className="mb-3 text-sm font-semibold">Trial result</div>
+            {errorMessage && (
+              <p className="mb-3 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                {errorMessage}
+              </p>
+            )}
+            {isRunning && (
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-xs text-foreground/70">
+                <Loader2 className="size-3.5 animate-spin" aria-hidden />
+                {submission?.status === "classifying"
+                  ? "Five agents running in parallel — usually 30–90 seconds."
+                  : "Submitted. Waiting for the agent pool to pick it up…"}
+              </div>
+            )}
+            {submission?.status === "error" && (
+              <p className="mb-3 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                {submission.error ?? "Classification failed."}
+              </p>
+            )}
             {result ? (
               <div className="space-y-4">
                 <div className="rounded-lg border border-primary/20 bg-[var(--primary-tint)] p-4">
@@ -305,7 +354,7 @@ export function PromptLab() {
                     {CLASSIFICATION_LABEL[result.classification]}
                   </div>
                   <div className="mt-2 font-mono text-xs text-muted-foreground">
-                    confidence {result.confidence.toFixed(2)} · mock score{" "}
+                    confidence {result.confidence.toFixed(2)} · score{" "}
                     {result.score.toFixed(3)}
                   </div>
                 </div>
