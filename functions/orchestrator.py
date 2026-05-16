@@ -5,6 +5,7 @@ ground truth, persists artifacts to the volume, and updates the leaderboard
 Modal Dict with an EMA per agent.
 """
 import json
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,6 +27,18 @@ from functions.score_round import score_round
 
 EMA_ALPHA = 0.1
 HISTORY_CAP = 200
+
+
+def _atomic_write(path: Path, content: str) -> None:
+    """Write `content` to `path` atomically via tmp + os.replace.
+
+    Avoids leaving a half-written round.json on disk if a Modal worker
+    is OOM-killed mid-write — the readers under api.py would otherwise
+    silently skip the malformed file.
+    """
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(content)
+    os.replace(tmp, path)
 
 
 @app.function(
@@ -72,9 +85,9 @@ def run_round(challenge: dict, truth: dict, round_id: str | None = None) -> dict
 
     round_dir = Path(VOLUME_MOUNT) / "rounds" / round_id
     round_dir.mkdir(parents=True, exist_ok=True)
-    (round_dir / "round.json").write_text(json.dumps(round_dict, indent=2))
-    (round_dir / "predictions.json").write_text(json.dumps(predictions, indent=2))
-    (round_dir / "scores.json").write_text(json.dumps(scores, indent=2))
+    _atomic_write(round_dir / "round.json", json.dumps(round_dict, indent=2))
+    _atomic_write(round_dir / "predictions.json", json.dumps(predictions, indent=2))
+    _atomic_write(round_dir / "scores.json", json.dumps(scores, indent=2))
     volume.commit()
 
     for agent_name, score_entry in scores.items():

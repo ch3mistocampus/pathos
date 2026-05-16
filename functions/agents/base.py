@@ -35,7 +35,7 @@ def _is_transient(exc: BaseException) -> bool:
     if isinstance(exc, (anthropic.RateLimitError, anthropic.APIConnectionError)):
         return True
     if isinstance(exc, anthropic.APIStatusError):
-        return getattr(exc, "status_code", None) in (503, 529)
+        return getattr(exc, "status_code", None) in (500, 502, 503, 504, 529)
     return False
 
 
