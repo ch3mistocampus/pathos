@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-/** Minimal DNA double-helix mark for the brand wordmark. */
+/** Minimal DNA double-helix mark for the PathosHunt brand wordmark. */
 export function HelixMark({
   className,
   ...props
@@ -15,8 +15,8 @@ export function HelixMark({
     >
       <defs>
         <linearGradient id="helix-stroke" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1d4ed8" />
-          <stop offset="100%" stopColor="#0e3a96" />
+          <stop offset="0%" stopColor="var(--primary)" />
+          <stop offset="100%" stopColor="var(--primary-deep)" />
         </linearGradient>
       </defs>
       <path
@@ -33,8 +33,7 @@ export function HelixMark({
         strokeLinecap="round"
         fill="none"
       />
-      {/* Rungs */}
-      <g stroke="#9bb6e3" strokeWidth="1.1" strokeLinecap="round">
+      <g stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.45">
         <line x1="9" y1="6" x2="23" y2="6" />
         <line x1="11" y1="11" x2="21" y2="11" />
         <line x1="11" y1="16" x2="21" y2="16" />
@@ -45,21 +44,27 @@ export function HelixMark({
   );
 }
 
-/** A pulsing dot used for "LIVE" indicators. */
+/** Pulsing dot used for "LIVE" indicators. Color follows the --live token. */
 export function LiveDot({ className }: { className?: string }) {
   return (
     <span className={`relative inline-flex h-2 w-2 ${className ?? ""}`}>
-      <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60" />
-      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+      <span
+        className="absolute inset-0 animate-ping rounded-full"
+        style={{ background: "var(--live-soft)" }}
+      />
+      <span
+        className="relative inline-flex h-2 w-2 rounded-full"
+        style={{ background: "var(--live)" }}
+      />
     </span>
   );
 }
 
-/** Compact sparkline; values are 0–1, drawn with subtle curves. */
+/** Compact sparkline; values are 0–1. */
 export function Sparkline({
   values,
   className,
-  stroke = "#1d4ed8",
+  stroke = "var(--primary)",
   width = 56,
   height = 16,
 }: {
@@ -102,7 +107,7 @@ export function Sparkline({
 /** Tiny bar-spark used in evidence rows. */
 export function BarSpark({
   values,
-  color = "#1d4ed8",
+  color = "var(--primary)",
   className,
 }: {
   values: number[];

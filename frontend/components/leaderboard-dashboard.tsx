@@ -1,13 +1,40 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LeaderboardTable, type LeaderboardSortKey } from "@/components/leaderboard-table";
+import {
+  LeaderboardTable,
+  type LeaderboardSortKey,
+} from "@/components/leaderboard-table";
 import { EmaChart } from "@/components/ema-chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AGENT_LABEL, type AgentName, type LeaderboardEntry } from "@/lib/types";
 
 interface Props {
   entries: LeaderboardEntry[];
+}
+
+/** Eyebrow + heading. Replaces shadcn CardHeader without re-introducing card chrome. */
+function PanelHeader({
+  eyebrow,
+  title,
+  hint,
+}: {
+  eyebrow: string;
+  title: string;
+  hint?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/45">
+        {eyebrow}
+      </span>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+        {hint && (
+          <p className="text-xs text-foreground/55">{hint}</p>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function LeaderboardDashboard({ entries }: Props) {
@@ -52,19 +79,18 @@ export function LeaderboardDashboard({ entries }: Props) {
     : "Showing all five strategies in the chart.";
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
       <div role="status" aria-live="polite" className="sr-only">
         {announcement}
       </div>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle>Standings</CardTitle>
-          <p className="text-xs text-foreground/60">
-            Click an agent to isolate its EMA trace. Click again to reset.
-          </p>
-        </CardHeader>
-        <CardContent>
+      <section className="flex flex-col gap-5">
+        <PanelHeader
+          eyebrow="Standings"
+          title="Strategy rankings"
+          hint="Click any agent to isolate its trace"
+        />
+        <div className="border-t border-border/60 pt-2">
           <LeaderboardTable
             entries={sortedEntries}
             sortKey={sortKey}
@@ -74,17 +100,19 @@ export function LeaderboardDashboard({ entries }: Props) {
             chartFocusedAgent={focusedAgent}
             onAgentChartToggle={toggleAgentChart}
           />
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Score history</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <section className="flex flex-col gap-5">
+        <PanelHeader
+          eyebrow="History"
+          title="EMA score over rounds"
+          hint={focusedAgent ? `isolated · ${AGENT_LABEL[focusedAgent]}` : "α = 0.10"}
+        />
+        <div className="border-t border-border/60 pt-4">
           <EmaChart entries={entries} focusedAgent={focusedAgent} />
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }

@@ -9,7 +9,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-instrument-serif), var(--font-sans);
+  --font-display: var(--font-instrument-serif), var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,107 +50,121 @@
 }
 
 :root {
-  /* Pathos neutrals: zinc-leaning, slightly cool so the emerald accent reads clinical
-     rather than springy. Off-white background instead of pure #fff. */
-  --background: oklch(0.992 0.002 250);
-  --foreground: oklch(0.18 0.012 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.012 250);
-  --popover: oklch(0.992 0.002 250);
-  --popover-foreground: oklch(0.18 0.012 250);
+  /* PathosHunt — Genomic Arena identity.
+     Cool icy-white background (#f7f9fc), deep navy ink (#0c1733),
+     cobalt primary (#1f47b8 → #142e85 gradient), dusty-blue muted text. */
+  --background: #f7f9fc;
+  --foreground: #0c1733;
+  --card: #ffffff;
+  --card-foreground: #0c1733;
+  --popover: #ffffff;
+  --popover-foreground: #0c1733;
 
-  /* Emerald accent. Primary == accent here so shadcn's `default` button + leader
-     ring carry the brand. Lift foreground to near-white for AA contrast. */
-  --primary: oklch(0.58 0.142 156);
-  --primary-foreground: oklch(0.985 0.005 156);
-  --accent: oklch(0.58 0.142 156);
-  --accent-foreground: oklch(0.985 0.005 156);
-  --accent-soft: oklch(0.96 0.025 156);
+  --primary: #1f47b8;
+  --primary-foreground: #ffffff;
+  --primary-deep: #142e85;
+  --primary-tint: #eaf1fc;
+  --accent: #1f47b8;
+  --accent-foreground: #ffffff;
+  --accent-soft: #eef3fb;
 
-  --secondary: oklch(0.965 0.003 250);
-  --secondary-foreground: oklch(0.22 0.012 250);
-  --muted: oklch(0.965 0.003 250);
-  --muted-foreground: oklch(0.5 0.012 250);
+  --secondary: #eef3fb;
+  --secondary-foreground: #0c1733;
+  --muted: #eef3fb;
+  --muted-foreground: #5b6c8a;
 
-  /* Destructive stays clinical brick red — meaningfully distinct from the emerald
-     accent so verdict status (wrong/right) reads at a glance. */
-  --destructive: oklch(0.566 0.196 28);
-  --destructive-foreground: oklch(0.99 0.01 28);
+  /* Emerald reserved for the "live" indicator. Single semantic accent. */
+  --live: #10b981;
+  --live-soft: rgba(16, 185, 129, 0.18);
 
-  --border: oklch(0.91 0.005 250);
-  --input: oklch(0.91 0.005 250);
-  --ring: oklch(0.58 0.142 156 / 55%);
+  /* Destructive stays a clinical brick red — distinct from the cobalt primary
+     so pathogenic/wrong-verdict reads remain unambiguous. */
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
 
-  /* Five distinct strategy hues. Saturation capped <= 0.16 per rubric.
-     Order is intentional: chart-1 = brand emerald so the leader gets the accent. */
-  --chart-1: oklch(0.62 0.14 156); /* emerald  — functional_first / leader vibe */
-  --chart-2: oklch(0.58 0.14 244); /* slate-blue */
-  --chart-3: oklch(0.72 0.14 78);  /* amber */
-  --chart-4: oklch(0.6 0.16 350);  /* deep rose */
-  --chart-5: oklch(0.45 0.025 250);/* graphite — the "no-color" agent */
+  --border: #dde6f3;
+  --input: #dde6f3;
+  --ring: rgba(31, 71, 184, 0.45);
 
-  --radius: 0.75rem;
+  /* Five strategy hues, all in the cobalt-to-cyan family so the chart reads as
+     a single coherent family. functional_first stays the brand cobalt. */
+  --chart-1: #1f47b8; /* cobalt — functional_first / leader */
+  --chart-2: #2a62c5; /* mid blue — strict_rule */
+  --chart-3: #0e7490; /* deep cyan — insilico_first */
+  --chart-4: #3473a6; /* dusty blue — population_first */
+  --chart-5: #7a8aab; /* slate — conservative */
 
-  /* Diffusion shadow — wide, tinted with the foreground hue so it sits in the page
-     rather than floating. Used by cards we actually want to elevate. */
-  --shadow-diffusion: 0 24px 48px -28px oklch(0.18 0.012 250 / 0.18),
-    0 2px 4px -2px oklch(0.18 0.012 250 / 0.04);
+  --radius: 1rem;
 
-  --sidebar: oklch(0.985 0.003 250);
-  --sidebar-foreground: oklch(0.18 0.012 250);
-  --sidebar-primary: oklch(0.58 0.142 156);
-  --sidebar-primary-foreground: oklch(0.985 0.005 156);
-  --sidebar-accent: oklch(0.96 0.005 250);
-  --sidebar-accent-foreground: oklch(0.22 0.012 250);
-  --sidebar-border: oklch(0.91 0.005 250);
-  --sidebar-ring: oklch(0.58 0.142 156 / 55%);
+  /* Diffusion shadow — wide cobalt-tinted bloom + inner highlight, lifted from
+     the Arena cards. */
+  --shadow-diffusion: 0 18px 40px -24px rgba(20, 46, 133, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  --shadow-lift: 0 22px 44px -26px rgba(20, 46, 133, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0c1733;
+  --sidebar-primary: #1f47b8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef3fb;
+  --sidebar-accent-foreground: #0c1733;
+  --sidebar-border: #dde6f3;
+  --sidebar-ring: rgba(31, 71, 184, 0.45);
 }
 
 .dark {
-  /* Zinc-950 mood, slightly cool. Avoid pure black per rubric. */
-  --background: oklch(0.155 0.008 250);
-  --foreground: oklch(0.97 0.005 250);
-  --card: oklch(0.205 0.01 250);
-  --card-foreground: oklch(0.97 0.005 250);
-  --popover: oklch(0.205 0.01 250);
-  --popover-foreground: oklch(0.97 0.005 250);
+  /* Arena's dark-mode counterpart pulled from the "From research to report"
+     band — deep navy with cobalt accents. */
+  --background: #0a1733;
+  --foreground: #f3f6ff;
+  --card: #101f44;
+  --card-foreground: #f3f6ff;
+  --popover: #101f44;
+  --popover-foreground: #f3f6ff;
 
-  --primary: oklch(0.72 0.142 156);
-  --primary-foreground: oklch(0.16 0.04 156);
-  --accent: oklch(0.72 0.142 156);
-  --accent-foreground: oklch(0.16 0.04 156);
-  --accent-soft: oklch(0.3 0.06 156);
+  --primary: #3563d6;
+  --primary-foreground: #ffffff;
+  --primary-deep: #1f47b8;
+  --primary-tint: rgba(53, 99, 214, 0.18);
+  --accent: #3563d6;
+  --accent-foreground: #ffffff;
+  --accent-soft: rgba(53, 99, 214, 0.16);
 
-  --secondary: oklch(0.265 0.01 250);
-  --secondary-foreground: oklch(0.97 0.005 250);
-  --muted: oklch(0.245 0.008 250);
-  --muted-foreground: oklch(0.7 0.01 250);
+  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary-foreground: #f3f6ff;
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: rgba(243, 246, 255, 0.65);
 
-  --destructive: oklch(0.68 0.18 28);
-  --destructive-foreground: oklch(0.99 0.01 28);
+  --live: #34d399;
+  --live-soft: rgba(52, 211, 153, 0.22);
 
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.142 156 / 55%);
+  --destructive: #e07a6a;
+  --destructive-foreground: #1b0808;
 
-  /* Slightly brighter chart hues in dark mode so they survive over the zinc bg. */
-  --chart-1: oklch(0.74 0.14 156);
-  --chart-2: oklch(0.72 0.13 244);
-  --chart-3: oklch(0.82 0.14 78);
-  --chart-4: oklch(0.72 0.16 350);
-  --chart-5: oklch(0.7 0.02 250);
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.18);
+  --ring: rgba(53, 99, 214, 0.55);
 
-  --shadow-diffusion: 0 28px 56px -30px oklch(0 0 0 / 0.6),
-    0 2px 6px -2px oklch(0 0 0 / 0.35);
+  --chart-1: #6b8fe8;
+  --chart-2: #7fb1ff;
+  --chart-3: #74c8e0;
+  --chart-4: #9bd6ff;
+  --chart-5: #c4d7ff;
 
-  --sidebar: oklch(0.205 0.01 250);
-  --sidebar-foreground: oklch(0.97 0.005 250);
-  --sidebar-primary: oklch(0.72 0.142 156);
-  --sidebar-primary-foreground: oklch(0.16 0.04 156);
-  --sidebar-accent: oklch(0.245 0.008 250);
-  --sidebar-accent-foreground: oklch(0.97 0.005 250);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.72 0.142 156 / 55%);
+  --shadow-diffusion: 0 30px 60px -30px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-lift: 0 36px 70px -32px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  --sidebar: #101f44;
+  --sidebar-foreground: #f3f6ff;
+  --sidebar-primary: #3563d6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(255, 255, 255, 0.06);
+  --sidebar-accent-foreground: #f3f6ff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: rgba(53, 99, 214, 0.55);
 }
 
 @layer base {
@@ -192,4 +207,17 @@
   }
 
   .pathos-shadow { box-shadow: var(--shadow-diffusion); }
+  .pathos-lift   { box-shadow: var(--shadow-lift); }
+  .font-display  { font-family: var(--font-instrument-serif), var(--font-sans); }
+
+  /* Cobalt → deep navy CTA gradient, matched to the Arena's request-access button. */
+  .pathos-cta {
+    background-image: linear-gradient(180deg, var(--primary) 0%, var(--primary-deep) 100%);
+    color: var(--primary-foreground);
+    box-shadow:
+      0 14px 30px -14px rgba(20, 46, 133, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  .pathos-cta:hover { filter: brightness(1.04); }
+  .pathos-cta:active { transform: translateY(1px); }
 }

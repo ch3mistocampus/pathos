@@ -13,6 +13,7 @@ import { AGENT_LABEL, type AgentName, type LeaderboardEntry } from "@/lib/types"
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { AnimatedNumber } from "@/components/animated-number";
+import { PATHOS_AGENT_COLORS } from "@/components/ema-chart";
 
 export type LeaderboardSortKey = "agent" | "ema" | "rounds";
 
@@ -122,14 +123,14 @@ export function LeaderboardTable({
                 leaderAgent != null && entry.agent === leaderAgent;
               const isChartFocus =
                 chartFocusedAgent != null && entry.agent === chartFocusedAgent;
+              const swatch = PATHOS_AGENT_COLORS[entry.agent];
               return (
                 <TableRow
                   key={entry.agent}
                   className={cn(
+                    "transition-opacity duration-300",
                     isLeader && "bg-primary/5 ring-1 ring-inset ring-primary/25",
-                    chartFocusedAgent &&
-                      !isChartFocus &&
-                      "opacity-45 transition-opacity",
+                    chartFocusedAgent && !isChartFocus && "opacity-40",
                   )}
                 >
                   <TableCell className="font-mono text-xs text-foreground/50">
@@ -146,18 +147,25 @@ export function LeaderboardTable({
                           : `Isolate EMA trace for ${AGENT_LABEL[entry.agent]}`
                       }
                       className={cn(
-                        "w-full rounded-md text-left transition-colors",
+                        "flex w-full items-center gap-2.5 rounded-md text-left transition-colors",
                         "hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                         "-mx-2 -my-1 px-2 py-1",
                         isChartFocus && "bg-accent/40",
                       )}
                     >
-                      <div className="font-medium">
-                        {AGENT_LABEL[entry.agent]}
-                      </div>
-                      <div className="font-mono text-xs text-foreground/50">
-                        {entry.agent}
-                      </div>
+                      <span
+                        aria-hidden
+                        className="inline-block size-2 shrink-0 rounded-full"
+                        style={{ background: swatch }}
+                      />
+                      <span className="flex min-w-0 flex-col">
+                        <span className="font-medium leading-tight">
+                          {AGENT_LABEL[entry.agent]}
+                        </span>
+                        <span className="font-mono text-[11px] leading-tight text-foreground/50">
+                          {entry.agent}
+                        </span>
+                      </span>
                     </button>
                   </TableCell>
                   <TableCell className="text-right">
@@ -225,10 +233,15 @@ export function LeaderboardTable({
                   )}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-center gap-2">
                       <span className="font-mono text-xs text-foreground/50">
                         {idx + 1}.
                       </span>
+                      <span
+                        aria-hidden
+                        className="inline-block size-2 shrink-0 rounded-full"
+                        style={{ background: PATHOS_AGENT_COLORS[entry.agent] }}
+                      />
                       <span className="font-medium">{AGENT_LABEL[entry.agent]}</span>
                     </div>
                     <Badge

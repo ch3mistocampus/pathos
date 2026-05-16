@@ -125,9 +125,10 @@ export function EmaChart({ entries, focusedAgent }: Props) {
               type="monotone"
               dataKey={e.agent}
               stroke={AGENT_COLORS[e.agent]}
-              strokeWidth={focusedAgent ? 2.5 : 2}
+              strokeWidth={focusedAgent ? 2.5 : 1.75}
               dot={false}
               isAnimationActive={false}
+              style={{ transition: "stroke-width 300ms cubic-bezier(0.16,1,0.3,1)" }}
             />
           ))}
         </LineChart>

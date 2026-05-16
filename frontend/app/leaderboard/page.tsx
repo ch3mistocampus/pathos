@@ -13,10 +13,16 @@ export default async function LeaderboardPage() {
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-12">
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Leaderboard</h1>
-        <p className="mt-2 text-sm text-foreground/70">
+      <header className="mb-10">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+          Live arena · five strategies
+        </div>
+        <h1 className="mt-2 font-display text-[44px] leading-[1.04] tracking-[-0.015em] text-foreground sm:text-[52px]">
+          Leaderboard
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           EMA-smoothed score across all rounds. Higher is better; perfect is 1.0.
+          Click any agent to isolate its trace.
         </p>
       </header>
 

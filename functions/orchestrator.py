@@ -47,6 +47,50 @@ def _atomic_write(path: Path, content: str) -> None:
     secrets=[anthropic_secret],
     timeout=300,
 )
+def classify_only(challenge: dict) -> dict:
+    """Fan out the 5 agents on a user-submitted variant. No truth, no
+    scoring, no leaderboard update. Persists predictions to
+    /data/submissions/{submission_id}/ for later inspection.
+
+    Returns: {"predictions": {agent_name: AgentPrediction-shaped dict}}
+    """
+    from functions.agents.base import run_agent  # lazy: breaks module-init cycle
+
+    submission_id = f"sub_{int(time.time() * 1000)}"
+    agent_challenge = {k: v for k, v in challenge.items() if not k.startswith("_")}
+
+    inputs = [(agent_challenge, name) for name in AGENT_NAMES]
+    results = list(run_agent.starmap(inputs, return_exceptions=True))
+
+    predictions: dict[str, dict | None] = {}
+    for name, result in zip(AGENT_NAMES, results):
+        if isinstance(result, BaseException):
+            predictions[name] = None
+        else:
+            predictions[name] = result
+
+    timestamp = datetime.now(timezone.utc).isoformat()
+    submission_record = {
+        "submission_id": submission_id,
+        "timestamp": timestamp,
+        "variant": agent_challenge,
+        "predictions": predictions,
+    }
+
+    sub_dir = Path(VOLUME_MOUNT) / "submissions" / submission_id
+    sub_dir.mkdir(parents=True, exist_ok=True)
+    _atomic_write(sub_dir / "submission.json", json.dumps(submission_record, indent=2))
+    volume.commit()
+
+    return {"submission_id": submission_id, "predictions": predictions}
+
+
+@app.function(
+    image=image,
+    volumes={VOLUME_MOUNT: volume},
+    secrets=[anthropic_secret],
+    timeout=300,
+)
 def run_round(challenge: dict, truth: dict, round_id: str | None = None) -> dict:
     """One round: fan-out 5 agents, score, update leaderboard Dict, persist to volume.
 

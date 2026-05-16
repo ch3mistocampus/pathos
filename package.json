@@ -1,0 +1,23 @@
+{
+  "name": "pathos",
+  "version": "1.0.0",
+  "description": "Continuous benchmark tournament for AI agents that classify human genetic variants per ACMG/AMP guidelines.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ch3mistocampus/pathos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ch3mistocampus/pathos/issues"
+  },
+  "homepage": "https://github.com/ch3mistocampus/pathos#readme",
+  "dependencies": {
+    "convex": "^1.39.1"
+  }
+}

@@ -1,9 +1,10 @@
 """FastAPI app served by Modal.
 
-Single ASGI app mounting three GET routes under one Modal URL:
-- GET /leaderboard         -> list[LeaderboardEntry]
-- GET /rounds?limit=N      -> list[RoundSummary]
-- GET /rounds/{round_id}   -> Round (404 if missing, 400 if id is malformed)
+Single ASGI app mounting four routes under one Modal URL:
+- GET  /leaderboard         -> list[LeaderboardEntry]
+- GET  /rounds?limit=N      -> list[RoundSummary]
+- GET  /rounds/{round_id}   -> Round (404 if missing, 400 if id is malformed)
+- POST /classify            -> { submission_id, predictions } for user-submitted variants
 
 CORS-permissive for the demo frontend.
 """
@@ -14,6 +15,7 @@ from pathlib import Path
 import modal
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from modal_app import (
     AGENT_NAMES,
@@ -37,12 +39,16 @@ CLINVAR_TO_CODE = {
 ROUND_ID_RE = re.compile(r"^round_\d+$")
 
 
+class ClassifyRequest(BaseModel):
+    variant: dict
+
+
 def _build_app() -> FastAPI:
     fastapi_app = FastAPI(title="Pathos API")
     fastapi_app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
-        allow_methods=["GET", "OPTIONS"],
+        allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["*"],
     )
 
@@ -120,6 +126,18 @@ def _build_app() -> FastAPI:
                 return json.load(f)
         except (OSError, json.JSONDecodeError):
             raise HTTPException(status_code=404, detail=f"Round {round_id} not found")
+
+    @fastapi_app.post("/classify")
+    def classify(body: ClassifyRequest):
+        """Fan out the 5 agents on a user-submitted variant.
+
+        No ground truth, no scoring, no leaderboard update. Returns
+        {submission_id, predictions} once all five agents respond
+        (or fail). Synchronous: blocks for ~30-90s.
+        """
+        from functions.orchestrator import classify_only  # lazy: cycle guard
+        result = classify_only.remote(body.variant)
+        return result
 
     return fastapi_app
 
