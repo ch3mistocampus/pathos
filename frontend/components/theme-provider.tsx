@@ -76,14 +76,13 @@ export function useTheme(): ThemeContextValue {
 }
 
 // Inline IIFE executed before React hydration to set the .dark class and avoid
-// a flash of incorrect theme. Reads localStorage first, then prefers-color-scheme.
+// a flash of incorrect theme. Reads localStorage; default is light (we ignore
+// the OS prefers-color-scheme so first-time visitors always start in light).
 export const THEME_INIT_SCRIPT = `
 (function() {
   try {
     var stored = localStorage.getItem('${STORAGE_KEY}');
-    var theme = stored === 'dark' || stored === 'light'
-      ? stored
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var theme = stored === 'dark' || stored === 'light' ? stored : 'light';
     var root = document.documentElement;
     if (theme === 'dark') root.classList.add('dark');
     root.style.colorScheme = theme;
