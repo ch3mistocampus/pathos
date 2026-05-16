@@ -3,9 +3,10 @@ import path from "node:path";
 
 const nextConfig: NextConfig = {
   turbopack: {
-    // Pin the workspace root so Next doesn't accidentally pick up a stray
-    // package-lock.json from a parent directory.
-    root: path.resolve(__dirname),
+    // Workspace root is the repo root so the Next app can import from the
+    // sibling `convex/` package (schema, functions, and generated types
+    // for the user-submission flow).
+    root: path.resolve(__dirname, ".."),
   },
 };
 

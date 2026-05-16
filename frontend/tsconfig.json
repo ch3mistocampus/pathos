@@ -19,8 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@convex/*": ["../convex/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -29,8 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "../convex/_generated/**/*"
+    "**/*.mts"
   ],
   "exclude": ["node_modules"]
 }
