@@ -17,7 +17,6 @@ from modal_app import (
     image,
     volume,
 )
-from functions.orchestrator import run_round
 
 FIXTURES_DIR = Path("/fixtures")
 
@@ -31,6 +30,8 @@ FIXTURES_DIR = Path("/fixtures")
 )
 def tick() -> dict:
     """Run one scheduled round against a random fixture."""
+    from functions.orchestrator import run_round  # lazy import: avoids module-init cycle
+
     fixtures = sorted(FIXTURES_DIR.glob("*.json"))
     if not fixtures:
         return {"error": "no fixtures available", "fixtures_dir": str(FIXTURES_DIR)}

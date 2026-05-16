@@ -18,8 +18,11 @@ from modal_app import (
     leaderboard,
     volume,
 )
-from functions.agents.base import run_agent
 from functions.score_round import score_round
+# `run_agent` is imported lazily inside `run_round` to avoid the
+# modal_app ↔ functions.agents.base ↔ functions.orchestrator import cycle
+# that fires when a container starts with base.py or orchestrator.py as
+# its entry module.
 
 EMA_ALPHA = 0.1
 HISTORY_CAP = 200
@@ -36,6 +39,8 @@ def run_round(challenge: dict, truth: dict, round_id: str | None = None) -> dict
 
     Returns a Round-shaped dict matching frontend/lib/types.ts.
     """
+    from functions.agents.base import run_agent  # lazy: breaks module-init cycle
+
     if round_id is None:
         round_id = f"round_{int(time.time())}"
 
