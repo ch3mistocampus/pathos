@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { href: "/strategies", label: "Strategies" },
   { href: "/try", label: "Try prompts" },
   { href: "/round/round_1747403600", label: "Latest round" },
+  { href: "/how-it-works", label: "How it works" },
 ] as const;
 
 function isActive(pathname: string | null, href: string): boolean {
