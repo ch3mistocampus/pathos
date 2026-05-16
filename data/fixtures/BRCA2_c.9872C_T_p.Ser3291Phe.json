@@ -1,0 +1,45 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.9872C>T",
+  "hgvs_c": "NM_000059.4:c.9872C>T",
+  "hgvs_p": "p.Ser3291Phe",
+  "gene": "BRCA2",
+  "consequence": "missense_variant",
+  "chrom": "13",
+  "pos": 32398385,
+  "ref": "C",
+  "alt": "T",
+  "gnomad": {
+    "af": 0.00002,
+    "af_popmax": 0.0002,
+    "popmax_population": "afr",
+    "hom": 0,
+    "ac": 29,
+    "an": 1450000,
+    "note": "rare missense variant; 1000 Genomes reports a very low allele frequency"
+  },
+  "insilico": {
+    "revel": 0.34,
+    "cadd_phred": 18.2,
+    "alphamissense": 0.29,
+    "metarnn": 0.41,
+    "spliceai_max": 0.0,
+    "note": "approximate; predictors do not provide decisive evidence"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "31911673",
+      "title": "Guidelines for classification of BRCA2 variants in clinically calibrated coldspots.",
+      "abstract": "BRCA2 missense interpretation studies define regions where missense variation is less likely to be pathogenic, but this C-terminal variant remains classified as VUS in ClinVar.",
+      "relevant_criteria_hint": ["BP1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "923092",
+    "submitter_count": 2,
+    "note": "ClinVar VCV000923092; canonical SPDI NC_000013.11:32398384:C:T"
+  }
+}

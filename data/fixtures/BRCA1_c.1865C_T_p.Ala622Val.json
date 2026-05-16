@@ -1,0 +1,45 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.1865C>T",
+  "hgvs_c": "NM_007294.4:c.1865C>T",
+  "hgvs_p": "p.Ala622Val",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43093666,
+  "ref": "G",
+  "alt": "A",
+  "gnomad": {
+    "af": 0.00007,
+    "af_popmax": 0.00021,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 102,
+    "an": 1450000,
+    "note": "low-frequency known-benign missense variant"
+  },
+  "insilico": {
+    "revel": 0.12,
+    "cadd_phred": 12.4,
+    "alphamissense": 0.08,
+    "metarnn": 0.16,
+    "spliceai_max": 0.0,
+    "note": "approximate"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "16267036",
+      "title": "Sequence variants of uncertain significance in BRCA1: implications for clinical management.",
+      "abstract": "BRCA1 variant interpretation studies and expert-panel classifications identify p.Ala622Val as compatible with benign clinical interpretation.",
+      "relevant_criteria_hint": ["BP4", "BS1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "54371",
+    "submitter_count": 23,
+    "note": "ClinVar VCV000054371; canonical SPDI NC_000017.11:43093665:G:A"
+  }
+}

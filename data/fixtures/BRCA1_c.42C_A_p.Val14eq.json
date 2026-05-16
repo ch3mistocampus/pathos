@@ -1,0 +1,50 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.42C>A",
+  "hgvs_c": "NM_007294.4:c.42C>A",
+  "hgvs_p": "p.Val14=",
+  "gene": "BRCA1",
+  "consequence": "synonymous_variant",
+  "chrom": "17",
+  "pos": 43124055,
+  "ref": "G",
+  "alt": "T",
+  "gnomad": {
+    "af": 0.0015,
+    "af_popmax": 0.006,
+    "popmax_population": "afr",
+    "hom": 3,
+    "ac": 2175,
+    "an": 1450000,
+    "note": "low-frequency synonymous variant observed in population databases"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 9.5,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.0,
+    "note": "synonymous variant; missense predictors not applicable; CADD approximate"
+  },
+  "mavedb_function": {
+    "score": 0.05,
+    "category": "functional_normal",
+    "source": "Findlay_2018",
+    "note": "BRCA1 RING-region synonymous change; score approximate"
+  },
+  "literature": [
+    {
+      "pmid": "30209399",
+      "title": "Accurate classification of BRCA1 variants with saturation genome editing.",
+      "abstract": "Findlay et al. showed that many synonymous BRCA1 RING-domain edits behave like wild type in saturation genome editing.",
+      "relevant_criteria_hint": ["BS3", "BP7"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Likely_benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "37583",
+    "submitter_count": 7,
+    "note": "ClinVar VCV000037583; canonical SPDI NC_000017.11:43124054:G:T"
+  }
+}

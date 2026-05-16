@@ -1,0 +1,44 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.3548A>G",
+  "hgvs_c": "NM_007294.4:c.3548A>G",
+  "hgvs_p": "p.Tyr1183Cys",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43091052,
+  "ref": "A",
+  "alt": "G",
+  "gnomad": {
+    "af": 0.000005,
+    "af_popmax": 0.000012,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 7,
+    "an": 1442000,
+    "note": "Very rare across populations"
+  },
+  "insilico": {
+    "revel": 0.502,
+    "cadd_phred": 22.1,
+    "alphamissense": 0.473,
+    "metarnn": 0.51,
+    "spliceai_max": 0.04,
+    "note": "Predictors split around the moderate threshold; no consensus"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "32547009",
+      "title": "Functional and clinical evaluation of BRCA1 variants of uncertain significance.",
+      "abstract": "BRCA1 p.Tyr1183Cys has been observed in a small number of breast cancer probands and unaffected controls; no segregation data and no published functional assay available; in-silico predictors are split.",
+      "relevant_criteria_hint": ["PM2"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Uncertain_significance",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "55633",
+    "submitter_count": 4
+  }
+}

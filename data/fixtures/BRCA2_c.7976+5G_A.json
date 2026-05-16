@@ -1,0 +1,47 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.7976+5G>A",
+  "hgvs_c": "NM_000059.4:c.7976+5G>A",
+  "hgvs_p": null,
+  "gene": "BRCA2",
+  "consequence": "splice_region_variant",
+  "chrom": "13",
+  "pos": 32354860,
+  "ref": "G",
+  "alt": "A",
+  "gnomad": {
+    "af": 0.00021,
+    "af_popmax": 0.00043,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 304,
+    "an": 1448000,
+    "note": "Low frequency, present across populations"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 14.9,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.18,
+    "spliceai_donor_loss": 0.18,
+    "spliceai_acceptor_gain": 0.01,
+    "note": "SpliceAI moderate (below 0.5 threshold); ambiguous splice impact"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "26913838",
+      "title": "Functional characterization of BRCA2 c.7976+5G>A using minigene splice reporter assays.",
+      "abstract": "Minigene assays for BRCA2 c.7976+5G>A show variable splicing outcomes; the variant is currently considered likely benign after consideration of population frequency and inconclusive functional data.",
+      "relevant_criteria_hint": ["BP4", "BS1"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Likely_benign",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "52483",
+    "submitter_count": 7,
+    "note": "Reclassified from VUS to LB after 2020 reanalysis"
+  }
+}

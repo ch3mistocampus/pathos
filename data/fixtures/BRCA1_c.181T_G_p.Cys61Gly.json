@@ -1,0 +1,48 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.181T>G",
+  "hgvs_c": "NM_007294.4:c.181T>G",
+  "hgvs_p": "p.Cys61Gly",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43106487,
+  "ref": "T",
+  "alt": "G",
+  "gnomad": {
+    "af": null,
+    "af_popmax": null,
+    "popmax_population": null,
+    "hom": 0,
+    "ac": 0,
+    "an": 1450000,
+    "note": "absent from gnomAD v4"
+  },
+  "insilico": {
+    "revel": 0.957,
+    "cadd_phred": 27.4,
+    "alphamissense": 0.984,
+    "metarnn": 0.91,
+    "spliceai_max": 0.02
+  },
+  "mavedb_function": {
+    "score": -2.1,
+    "category": "loss_of_function",
+    "source": "Findlay_2018",
+    "note": "Saturation genome editing of BRCA1 RING domain"
+  },
+  "literature": [
+    {
+      "pmid": "30209399",
+      "title": "Accurate classification of BRCA1 variants with saturation genome editing.",
+      "abstract": "Findlay et al. demonstrate that c.181T>G (p.Cys61Gly) abolishes BRCA1 function in a saturation genome editing assay, supporting pathogenic classification.",
+      "relevant_criteria_hint": ["PS3"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "55407",
+    "submitter_count": 18
+  }
+}

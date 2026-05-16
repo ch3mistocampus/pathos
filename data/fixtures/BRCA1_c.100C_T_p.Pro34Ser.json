@@ -1,0 +1,50 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.100C>T",
+  "hgvs_c": "NM_007294.4:c.100C>T",
+  "hgvs_p": "p.Pro34Ser",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43115760,
+  "ref": "G",
+  "alt": "A",
+  "gnomad": {
+    "af": 0.000001,
+    "af_popmax": 0.000004,
+    "popmax_population": "nfe",
+    "hom": 0,
+    "ac": 1,
+    "an": 1450000,
+    "note": "Very rare; gnomAD exomes report near-zero frequency"
+  },
+  "insilico": {
+    "revel": 0.82,
+    "cadd_phred": 25.8,
+    "alphamissense": 0.91,
+    "metarnn": 0.79,
+    "spliceai_max": 0.01,
+    "note": "approximate"
+  },
+  "mavedb_function": {
+    "score": -1.7,
+    "category": "loss_of_function",
+    "source": "Findlay_2018",
+    "note": "BRCA1 RING-domain saturation genome editing; score approximate"
+  },
+  "literature": [
+    {
+      "pmid": "30209399",
+      "title": "Accurate classification of BRCA1 variants with saturation genome editing.",
+      "abstract": "Findlay et al. measured BRCA1 RING-domain missense variants in a saturation genome-editing assay, providing functional evidence for deleterious RING variants.",
+      "relevant_criteria_hint": ["PS3"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Likely_pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "418671",
+    "submitter_count": 5,
+    "note": "ClinVar VCV000418671; canonical SPDI NC_000017.11:43115759:G:A"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.5946del",
+  "hgvs_c": "NM_000059.4:c.5946del",
+  "hgvs_p": "p.Ser1982Argfs*22",
+  "gene": "BRCA2",
+  "consequence": "frameshift_variant",
+  "chrom": "13",
+  "pos": 32340301,
+  "ref": "T",
+  "alt": "-",
+  "gnomad": {
+    "af": 0.00019,
+    "af_popmax": 0.012,
+    "popmax_population": "asj",
+    "hom": 0,
+    "ac": 275,
+    "an": 1450000,
+    "note": "Ashkenazi Jewish founder mutation (6174delT); global AF small but non-zero"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 35.0,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": null,
+    "note": "PVS1-class frameshift; missense and splice predictors not applicable; CADD approximate"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "9042909",
+      "title": "The carrier frequency of the BRCA1 185delAG mutation and the BRCA2 6174delT mutation in Ashkenazi Jews.",
+      "abstract": "Struewing et al. reported BRCA2 6174delT, now NM_000059.4:c.5946del, as a recurrent Ashkenazi Jewish founder mutation.",
+      "relevant_criteria_hint": ["PVS1", "PS4"]
+    },
+    {
+      "pmid": "22430266",
+      "title": "Breast and ovarian cancer risks due to inherited mutations in BRCA1 and BRCA2.",
+      "abstract": "Carrier-risk estimates support the high-penetrance pathogenic interpretation of established BRCA2 founder frameshift variants including c.5946del.",
+      "relevant_criteria_hint": ["PS4"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "9325",
+    "submitter_count": 84,
+    "note": "ClinVar VCV000009325; canonical SPDI NC_000013.11:32340300:T:"
+  }
+}

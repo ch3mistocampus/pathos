@@ -1,0 +1,44 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.68_69del",
+  "hgvs_c": "NM_007294.4:c.68_69del",
+  "hgvs_p": "p.Glu23Valfs*17",
+  "gene": "BRCA1",
+  "consequence": "frameshift_variant",
+  "chrom": "17",
+  "pos": 43124027,
+  "ref": "AG",
+  "alt": "-",
+  "gnomad": {
+    "af": 0.0000091,
+    "af_popmax": 0.00081,
+    "popmax_population": "asj",
+    "hom": 0,
+    "ac": 13,
+    "an": 1434000,
+    "note": "Ashkenazi Jewish founder mutation (185delAG)"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 35.0,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": null,
+    "note": "PVS1-class null variant; in-silico missense scores not applicable"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "8554067",
+      "title": "The carrier frequency of the BRCA1 185delAG mutation is approximately 1 percent in Ashkenazi Jewish individuals.",
+      "abstract": "Struewing et al. report 185delAG (c.68_69delAG) as a founder pathogenic frameshift in Ashkenazi Jewish populations with elevated breast/ovarian cancer risk.",
+      "relevant_criteria_hint": ["PVS1", "PS4"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "17661",
+    "submitter_count": 25
+  }
+}

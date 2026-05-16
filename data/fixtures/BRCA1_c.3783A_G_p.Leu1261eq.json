@@ -1,0 +1,45 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.3783A>G",
+  "hgvs_c": "NM_007294.4:c.3783A>G",
+  "hgvs_p": "p.Leu1261=",
+  "gene": "BRCA1",
+  "consequence": "synonymous_variant",
+  "chrom": "17",
+  "pos": 43091748,
+  "ref": "T",
+  "alt": "C",
+  "gnomad": {
+    "af": 0.0032,
+    "af_popmax": 0.009,
+    "popmax_population": "nfe",
+    "hom": 11,
+    "ac": 4640,
+    "an": 1450000,
+    "note": "synonymous variant present in multiple populations at benign-supporting frequency"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 7.8,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.01,
+    "note": "synonymous variant; missense predictors not applicable; CADD approximate"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "16267036",
+      "title": "Sequence variants of uncertain significance in BRCA1: implications for clinical management.",
+      "abstract": "Clinical-management reviews of BRCA1 variant interpretation emphasize that synonymous variants without splice impact and with population support are generally benign-supporting.",
+      "relevant_criteria_hint": ["BP7", "BS1"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Likely_benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "55005",
+    "submitter_count": 13,
+    "note": "ClinVar VCV000055005; canonical SPDI NC_000017.11:43091747:T:C"
+  }
+}

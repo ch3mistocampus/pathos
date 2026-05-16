@@ -1,0 +1,48 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.4837A>G",
+  "hgvs_c": "NM_007294.4:c.4837A>G",
+  "hgvs_p": "p.Ser1613Gly",
+  "gene": "BRCA1",
+  "consequence": "missense_variant",
+  "chrom": "17",
+  "pos": 43070958,
+  "ref": "A",
+  "alt": "G",
+  "gnomad": {
+    "af": 0.272,
+    "af_popmax": 0.327,
+    "popmax_population": "nfe",
+    "hom": 109841,
+    "ac": 779812,
+    "an": 1432000,
+    "note": "Very common polymorphism"
+  },
+  "insilico": {
+    "revel": 0.073,
+    "cadd_phred": 7.2,
+    "alphamissense": 0.024,
+    "metarnn": 0.08,
+    "spliceai_max": 0.01
+  },
+  "mavedb_function": {
+    "score": 0.15,
+    "category": "functional_normal",
+    "source": "Findlay_2018",
+    "note": "Wild-type-like function"
+  },
+  "literature": [
+    {
+      "pmid": "16267036",
+      "title": "Sequence variants of uncertain significance in BRCA1: implications for clinical management.",
+      "abstract": "p.Ser1613Gly is a common BRCA1 polymorphism without disease association in multiple case-control studies.",
+      "relevant_criteria_hint": ["BA1", "BS3"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "37614",
+    "submitter_count": 20
+  }
+}

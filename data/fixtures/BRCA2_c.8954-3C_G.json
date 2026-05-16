@@ -1,0 +1,51 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.8954-3C>G",
+  "hgvs_c": "NM_000059.4:c.8954-3C>G",
+  "hgvs_p": null,
+  "gene": "BRCA2",
+  "consequence": "intron_variant",
+  "chrom": "13",
+  "pos": 32379747,
+  "ref": "C",
+  "alt": "G",
+  "gnomad": {
+    "af": null,
+    "af_popmax": null,
+    "popmax_population": null,
+    "hom": 0,
+    "ac": 0,
+    "an": 1450000,
+    "note": "absent or extremely rare in population databases"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 18.5,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": 0.62,
+    "note": "approximate; intronic splice-region variant"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "22632462",
+      "title": "Assessment of splicing defects in BRCA1 and BRCA2 variants.",
+      "abstract": "Published splice-assay work cited by ClinVar supports evaluating intronic BRCA2 variants near exon boundaries for aberrant splicing.",
+      "relevant_criteria_hint": ["PS3", "PM2"]
+    },
+    {
+      "pmid": "25556971",
+      "title": "Classification of BRCA1 and BRCA2 variants by multifactorial likelihood analysis.",
+      "abstract": "Multifactorial BRCA1/2 variant analyses provide clinical and segregation context used in classifying rare splice-region variants.",
+      "relevant_criteria_hint": ["PP1", "PM2"]
+    }
+  ],
+  "_difficulty": "hard",
+  "_ground_truth": {
+    "classification": "Likely_pathogenic",
+    "review_status": "criteria_provided_multiple_submitters_no_conflicts",
+    "clinvar_id": "52712",
+    "submitter_count": 7,
+    "note": "ClinVar VCV000052712; canonical SPDI NC_000013.11:32379746:C:G"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "variant_id": "BRCA2_NM_000059.4_c.1114A>C",
+  "hgvs_c": "NM_000059.4:c.1114A>C",
+  "hgvs_p": "p.Asn372His",
+  "gene": "BRCA2",
+  "consequence": "missense_variant",
+  "chrom": "13",
+  "pos": 32332592,
+  "ref": "A",
+  "alt": "C",
+  "gnomad": {
+    "af": 0.24,
+    "af_popmax": 0.33,
+    "popmax_population": "nfe",
+    "hom": 82000,
+    "ac": 348000,
+    "an": 1450000,
+    "note": "common benign BRCA2 polymorphism"
+  },
+  "insilico": {
+    "revel": 0.08,
+    "cadd_phred": 10.1,
+    "alphamissense": 0.06,
+    "metarnn": 0.11,
+    "spliceai_max": 0.0,
+    "note": "approximate"
+  },
+  "mavedb_function": null,
+  "literature": [
+    {
+      "pmid": "19661094",
+      "title": "Missense polymorphisms in BRCA1 and BRCA2 and risk of breast and ovarian cancer.",
+      "abstract": "Prospective and case-control analyses evaluated BRCA2 p.Asn372His among common missense polymorphisms rather than as a high-penetrance pathogenic variant.",
+      "relevant_criteria_hint": ["BA1"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Benign",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "9329",
+    "submitter_count": 41,
+    "note": "ClinVar VCV000009329; canonical SPDI NC_000013.11:32332591:A:C"
+  }
+}

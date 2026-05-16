@@ -1,0 +1,56 @@
+{
+  "variant_id": "BRCA1_NM_007294.4_c.5266dup",
+  "hgvs_c": "NM_007294.4:c.5266dup",
+  "hgvs_p": "p.Gln1756Profs*74",
+  "gene": "BRCA1",
+  "consequence": "frameshift_variant",
+  "chrom": "17",
+  "pos": 43057063,
+  "ref": "GGG",
+  "alt": "GGGG",
+  "gnomad": {
+    "af": 0.0002,
+    "af_popmax": 0.002,
+    "popmax_population": "asj",
+    "hom": 0,
+    "ac": 290,
+    "an": 1450000,
+    "note": "Ashkenazi Jewish founder mutation (5382insC); ClinVar submitter notes report elevated Ashkenazi frequency"
+  },
+  "insilico": {
+    "revel": null,
+    "cadd_phred": 34.0,
+    "alphamissense": null,
+    "metarnn": null,
+    "spliceai_max": null,
+    "note": "PVS1-class frameshift; missense predictors not applicable; CADD approximate"
+  },
+  "mavedb_function": {
+    "score": -2.3,
+    "category": "loss_of_function",
+    "source": "Findlay_2018",
+    "note": "BRCA1 BRCT-domain frameshift; score approximate from saturation-editing region"
+  },
+  "literature": [
+    {
+      "pmid": "9042909",
+      "title": "The 5382insC BRCA1 mutation in Ashkenazi Jewish breast and ovarian cancer families.",
+      "abstract": "Abeliovich et al. reported BRCA1 5382insC, now described as c.5266dup, as a recurrent founder pathogenic variant in Ashkenazi Jewish families with breast and ovarian cancer.",
+      "relevant_criteria_hint": ["PVS1", "PS4"]
+    },
+    {
+      "pmid": "22430266",
+      "title": "Breast and ovarian cancer risks due to inherited mutations in BRCA1 and BRCA2.",
+      "abstract": "Large carrier-risk analyses include BRCA1 c.5266dup among established pathogenic founder mutations with high breast and ovarian cancer risk.",
+      "relevant_criteria_hint": ["PS4"]
+    }
+  ],
+  "_difficulty": "easy",
+  "_ground_truth": {
+    "classification": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "clinvar_id": "17677",
+    "submitter_count": 94,
+    "note": "ClinVar VCV000017677; canonical SPDI NC_000017.11:43057062:GGG:GGGG"
+  }
+}
